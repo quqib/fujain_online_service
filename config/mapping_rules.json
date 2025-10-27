@@ -1,0 +1,158 @@
+{
+  "code": 200,
+  "msg": null,
+  "data": {
+    "imgfile": [
+      {
+        "fileName": "节能审查(固定资产投资项目)（网上办）.jpg",
+        "fileUnid": "9CE7E36808381C76C21C9A510C5CB97A"
+      },
+      {
+        "fileName": "节能审查(固定资产投资项目)（现场办）.jpg",
+        "fileUnid": "6A850380B137713C16E12B10BBD6ADAD"
+      },
+      {
+        "fileName": "业务经办.JPG",
+        "fileUnid": "947C8708140E19AFC1C1C883E5BA09FE"
+      }
+    ],
+    "lawList": [
+      {
+        "unid": "8F8294F4CD2DAC1715A58A8C235C5872",
+        "lawImplementdate": "2018年10月26日修订",
+        "lawLocalAreacode": null,
+        "lawLevel": "01",
+        "dirUnid": "5EA0B30916E33C9D326AAE92D6AF3D96",
+        "lawImplementdept": "全国人民代表大会常务委员会",
+        "lawLocalAreaname": null,
+        "lawSymbol": "2018年10月26日第十三届全国人民代表大会常务委员会第六次会议",
+        "lawOrdernum": "1",
+        "lawContent": "  第十五条　国家实行固定资产投资项目节能评估和审查制度。不符合强制性节能标准的项目，建设单位不得开工建设；已经建成的，不得投入生产、使用。政府投资项目不符合强制性节能标准的，依法负责项目审批的机关不得批准建设。具体办法由国务院管理节能工作的部门会同国务院有关部门制定。",
+        "lawName": "中华人民共和国节约能源法",
+        "createTime": "2022-08-11 10:35:57",
+        "lawLevelName": "法律",
+        "lawStatus": "1",
+        "timestamp": "2022-08-11 10:35:57.532"
+      },
+      {
+        "unid": "61B94EF5A410AD3E5A192825522E9F50",
+        "lawImplementdate": "2018年11月23日",
+        "lawLocalAreacode": null,
+        "lawLevel": "02",
+        "dirUnid": "5EA0B30916E33C9D326AAE92D6AF3D96",
+        "lawImplementdept": "福建省人民代表大会常务委员会",
+        "lawLocalAreaname": null,
+        "lawSymbol": "福建省第十三届人民代表大会常务委员会第七次会议",
+        "lawOrdernum": "3",
+        "lawContent": "  第十六条  本省实行固定资产投资项目节能评估和审查制度，审查结果向同级人民政府节能主管部门备案。不符合强制性节能标准的项目，建设单位不得开工建设；已经建成的，不得投入生产、使用。政府投资项目不符合强制性节能标准的，依法负责项目审批的机关不得批准建设。具体办法由省人民政府节能主管部门会同有关部门制定。",
+        "lawName": "福建省节约能源条例",
+        "createTime": "2022-08-11 10:35:57",
+        "lawLevelName": "法规",
+        "lawStatus": "1",
+        "timestamp": "2023-02-22 10:27:52.801"
+      },
+      {
+        "unid": "CDE32CD936DA56F12DBA238B57E9DE2C",
+        "lawImplementdate": "2018年1月29日",
+        "lawLocalAreacode": null,
+        "lawLevel": "05",
+        "dirUnid": "5EA0B30916E33C9D326AAE92D6AF3D96",
+        "lawImplementdept": "福建省人民政府节约能源办公室",
+        "lawLocalAreaname": null,
+        "lawSymbol": "闽节能办〔2018〕1号",
+        "lawOrdernum": "4",
+        "lawContent": "  第三条  固定资产投资项目节能审查意见是项目开工建设、竣工验收和运营管理的重要依据。\n  政府投资项目建设单位在报送项目可行性研究报告前，需取得节能审查机关出具的节能审查意见。\n  企业投资项目建设单位需在开工建设前取得节能审查机关出具的节能审查意见。\n  未按本办法规定进行节能审查，或节能审查未通过的项目，建设单位不得开工建设，已经建成的不得投入生产、使用。",
+        "lawName": "福建省固定资产投资项目节能审查实施办法",
+        "createTime": "2022-08-11 10:35:57",
+        "lawLevelName": "规范性文件",
+        "lawStatus": "1",
+        "timestamp": "2023-02-22 10:28:02.310"
+      },
+      {
+        "unid": "B78B221F7B0D4E50945C4B62BB50481E",
+        "lawImplementdate": "2025年9月1日",
+        "lawLocalAreacode": null,
+        "lawLevel": "04",
+        "dirUnid": "5EA0B30916E33C9D326AAE92D6AF3D96",
+        "lawImplementdept": "国家发展改革委",
+        "lawLocalAreaname": null,
+        "lawSymbol": "国家发展改革委令第31号",
+        "lawOrdernum": "5",
+        "lawContent": "第三条固定资产投资项目节能审查意见是项目开工建设、竣工验收和运营管理的重要依据。政府投资项目，建设单位在报送项目可行性研究报告前，需取得节能审查机关出具的节能审查意见。企业投资项目，建设单位需在开工建设前取得节能审查机关出具的节能审查意见。未按本办法规定进行节能审查，或节能审查未通过的项目，建设单位不得开工建设，已经建成的不得投入生产、使用。第十八条项目建设单位应严格按照节能审查意见开展项目建设。通过节能审查的项目，在开工建设前或建设过程中发生重大变动的，建设单位应向原节能审查机关提交变更申请。项目节能审查权限发生变化的，建设单位应向有权审查机关提交变更申请。节能审查机关依据实际情况，作出同意变更的决定或重新进行节能审查。项目重大变动的情形包括下列方面：（一）建设单位、建设地点、建设规模发生变化；（二）主要生产装置、用能设备、工艺技术路线等发生变化；（三）主要产品品种发生变化；（四）项目其他方面较节能报告、节能审查意见等发生重大变化。",
+        "lawName": "《固定资产投资项目节能审查和碳排放评价办法》",
+        "createTime": "2024-03-21 10:22:03",
+        "lawLevelName": "规章",
+        "lawStatus": "1",
+        "timestamp": "2025-09-28 16:51:03.084"
+      }
+    ],
+    "apasDirectory": {
+      "industryCodeGb": "04",
+      "dirGrade": "2",
+      "chargeFlag": "0",
+      "deptName": "福建省工业和信息化厅",
+      "unid": "5EA0B30916E33C9D326AAE92D6AF3D96",
+      "handleTowinmaxnum": "0",
+      "handleLaw": "1.【规章】《固定资产投资项目节能审查和碳排放评价办法》（国家发改委2025年第31号令）第三条固定资产投资项目节能审查意见是项目开工建设、竣工验收和运营管理的重要依据。政府投资项目，建设单位在报送项目可行性研究报告前，需取得节能审查机关出具的节能审查意见。企业投资项目，建设单位需在开工建设前取得节能审查机关出具的节能审查意见。未按本办法规定进行节能审查，或节能审查未通过的项目，建设单位不得开工建设，已经建成的不得投入生产、使用。第八条国家发展改革委核报国务院审批（核准）和国家发展改革委审批（核准）的固定资产投资项目，以及年综合能源消费量（建设地点、主要生产工艺和设备未改变的改建和技术改造项目按照建成投产后年综合能源消费增量计算，其他项目按照建成投产后年综合能源消费量计算，电力折算系数按当量值，本条下同）10000吨标准煤及以上（或年煤炭消费量10000吨及以上）的固定资产投资项目，除应由国家发展改革委审查的，其节能审查由省级节能审查机关负责。其他固定资产投资项目，其节能审查权限由省级节能审查机关依据实际情况自行决定。第十八条通过节能审查的项目，在开工建设前或建设过程中发生重大变动的，建设单位应向原节能审查机关提交变更申请。2.【规章】根据《福建省固定资产投资项目节能审查实施办法》（闽发改规【2023】9号）第十二条设区的市（含平潭综合实验区，下同）节能审查机关负责年综合能源消费量5000吨标准煤及以上至10000吨标准煤以下的固定资产投资项目节能审查，其他项目节能审查管理权限由设区的市人民政府管理节能工作的部门商同级节能审查机关依据实际情况决定。",
+      "proceflowFileunidOnline": "9CE7E36808381C76C21C9A510C5CB97A",
+      "remark": null,
+      "proceflowFileunidScene": "6A850380B137713C16E12B10BBD6ADAD",
+      "dirStatus": "1",
+      "modifyTime": "2025-09-28 17:31:33",
+      "parentUnid": "52A2532B7BC1DCCCF68E2ACCFD6F4CDA",
+      "createUsername": "李玉琴",
+      "handleContent": "1.根据闽发改规【2023】9号要求设区市节能审查机关负责（已核准或备案）年综合能源消费量5000吨标准煤及以上至10000吨标准煤以下的工业企业固定资产投资项目（不含能源行业固定资产投资项目）新、改、扩建项目节能审查；县区级负责（已核准或备案）年综合能源消费量1000吨及以上至5000吨标准煤以下（当量值）的工业企业固定资产投资项目（不含能源行业固定资产投资项目）新、改、扩建项目节能审查（国家另有规定除外）。2.上述范围内，已通过节能审查的项目，在开工建设前或建设过程中发生《固定资产投资项目节能审查和碳排放评价办法》（国家发改委2025年第31号令）第十八条规定的重大变动的。",
+      "localZoning": null,
+      "dirCode": "35010400700103",
+      "chargeItems": null,
+      "dirAnticipateday": "20",
+      "resultExampleguid": "A9B661D0B29DB2717A77267348DAEA92",
+      "modifyUsername": "李玉琴",
+      "subsortid": "03",
+      "createUserid": "106F524E802C1583471B0B85FEAFAD70",
+      "dirPromiseday": "6",
+      "modifyUserid": "106F524E802C1583471B0B85FEAFAD70",
+      "handleStar": "5",
+      "dirType": "行政许可",
+      "deptUnid": "9EBC9F940836A490D77A6D876DBCF80E",
+      "resultFormguid": "4A8F911F8137606F1061005D492034A2",
+      "dirAlias": null,
+      "parentName": "工业企业固定资产投资项目（除能源行业外）节能审查",
+      "areaCode": "350000",
+      "proceflowFileunidHandling": "947C8708140E19AFC1C1C883E5BA09FE",
+      "createTime": "2022-08-11 10:35:57",
+      "sortid": "001",
+      "industryCodePv": "38",
+      "dirNameExplain": null,
+      "dirUseLevel": "3,4",
+      "dirVersion": "6",
+      "dirOrdernum": "3",
+      "dirName": "市县级工业企业固定资产投资项目（除能源行业外）节能审查"
+    },
+    "specialList": [
+      {
+        "unid": "C8743B5EE177AA759FFCFBB7BE859D59",
+        "createTime": "2022-08-11 10:35:57",
+        "specialPromisedayType": "0",
+        "specialStatus": "1",
+        "specialName": "委托节能评审",
+        "dirUnid": "5EA0B30916E33C9D326AAE92D6AF3D96",
+        "specialOrdernum": "1",
+        "specialLaw": "【规章】《固定资产投资项目节能审查和碳排放评价办法》（国家发改委2025年第31号令）第十五条节能审查机关受理节能审查申报材料后，应委托具备技术能力的机构进行评审，形成评审意见，作为节能审查的重要依据。",
+        "specialPromiseday": "15",
+        "timestamp": "2025-09-28 16:51:19.523"
+      }
+    ],
+    "wordfile": [
+      {
+        "fileName": "（空白）XX市工业和信息化局文件.docx",
+        "fileUnid": "4A8F911F8137606F1061005D492034A2"
+      },
+      {
+        "fileName": "（格式）XX市工业和信息化局文件.docx",
+        "fileUnid": "A9B661D0B29DB2717A77267348DAEA92"
+      }
+    ]
+  },
+  "total": null
+}
