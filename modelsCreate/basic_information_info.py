@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class ApplicationMaterialInfo(Base):
+class BasicInformationInfo(Base):
     __tablename__ = 'basic_information_info'
 
     # 主键

@@ -1,4 +1,26 @@
-# main.py
+from sprider.second_page_sprider import fetch_all_unids
+from sprider.unid_page_sprider import get_message
+from storage.storage_message import save_all
+
+def main():
+    # 获取列表(unid)
+    unid_list = fetch_all_unids()
+    # unid_list = ["unid1", "unid2", "unid3"]  # 测试列表
+    for unid in unid_list:
+        try:
+            # 保存数据
+            parsed = get_message(unid)
+            save_all(parsed)
+            print(f"{unid} 保存成功")
+        except Exception as e:
+            print(f"{unid} 处理失败：", e)
+
+if __name__ == "__main__":
+    main()
+
+
+
+exit()
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import date
