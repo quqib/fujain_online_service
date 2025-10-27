@@ -1,12 +1,22 @@
 # 数据库连接配置
+# DB_CONFIG = {
+#     'host': '172.16.30.106',
+#     'port': 3306,
+#     'user': 'root',
+#     'password': 'root123',
+#     'database': 'online_service',
+#     'charset': 'utf8mb4'
+# }
+
 DB_CONFIG = {
-    'host': '172.16.30.106',
+    'host': '192.168.10.110',
     'port': 3306,
     'user': 'root',
     'password': 'root123',
     'database': 'online_service',
     'charset': 'utf8mb4'
 }
+
 
 # 构建数据库 URL
 DATABASE_URL = f"mysql+pymysql://{DB_CONFIG['user']}:{DB_CONFIG['password']}@" \

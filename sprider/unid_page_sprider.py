@@ -5,10 +5,16 @@ import requests
 from config.seetings import headers, urlConfig, parameter
 
 
-def get_messsage():
+def get_messsage(unid):
+    # 拷贝一份 basicInformation 参数模板
+    params = parameter["basicInformation"].copy()
+
+    # 动态注入 unid
+    params["unid"] = unid
+
     res = requests.get(
         url=urlConfig.get("basicInformationUrl"),
-        params=parameter.get("basicInformation"),
+        params=params,
         headers=headers,
     )
     resJson = res.json()
@@ -77,10 +83,16 @@ def get_messsage():
     # 条款内容
     lawContent = law.get("lawContent")
 
-def get_application_materials():
+def get_application_materials(unid):
+    # 拷贝一份 basicInformation 参数模板
+    params = parameter["basicInformation"].copy()
+
+    # 动态注入 unid
+    params["unid"] = unid
+
     res = requests.get(
         url=urlConfig.get("applicationMaterialsUrl"),
-        params=parameter.get("applicationMaterials"),
+        params=params,
         headers=headers,
     )
     resJson = res.json()
