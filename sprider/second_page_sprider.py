@@ -33,8 +33,8 @@ def fetch_all_unids():
 
         # 遍历每页
         for page in range(1, total_pages + 1):
-            # if page == 2:
-            #     break
+            if page == 2:
+                break
             print(f"运行至{page}页")
             time.sleep(random.randint(5, 15))
             parameter.get("secondaryPage")['pageNum'] = str(page)
