@@ -1,3 +1,6 @@
+import random
+import time
+
 import requests
 import math
 from config.seetings import headers, urlConfig, parameter
@@ -22,14 +25,18 @@ def fetch_all_unids():
             print("API 返回无数据")
             return []
 
-        total = data["total"]
+        total = res.json().get("total")
         page_size = 10
-        total_pages = math.ceil(total / page_size)
+        total_pages = math.ceil(int(total) / page_size)
 
         print(f"共 {total} 条记录，{total_pages} 页")
 
         # 遍历每页
         for page in range(1, total_pages + 1):
+            # if page == 2:
+            #     break
+            print(f"运行至{page}页")
+            time.sleep(random.randint(5, 15))
             parameter.get("secondaryPage")['pageNum'] = str(page)
             res = requests.get(
                 url=urlConfig.get("secondaryPageUrl"),

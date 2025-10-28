@@ -1,21 +1,21 @@
 # 数据库连接配置
+DB_CONFIG = {
+    'host': '172.16.30.106',
+    'port': 3306,
+    'user': 'root',
+    'password': 'root123',
+    'database': 'online_service_create',
+    'charset': 'utf8mb4'
+}
+
 # DB_CONFIG = {
-#     'host': '172.16.30.106',
+#     'host': '192.168.10.110',
 #     'port': 3306,
 #     'user': 'root',
 #     'password': 'root123',
 #     'database': 'online_service',
 #     'charset': 'utf8mb4'
 # }
-
-DB_CONFIG = {
-    'host': '192.168.10.110',
-    'port': 3306,
-    'user': 'root',
-    'password': 'root123',
-    'database': 'online_service',
-    'charset': 'utf8mb4'
-}
 
 
 # 构建数据库 URL
@@ -48,7 +48,9 @@ urlConfig = {
     # 链接获取信息(申报材料) GET
     "applicationMaterialsUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasDirectory/getDirMaterialList",
     # 下载附件链接 GET
-    "downloadAttachmentUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/file/downloadFile"
+    "downloadAttachmentUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/file/downloadFile",
+    # 处理核查标准
+    "materialCheckStandardUrl":"https://zwfw.fujian.gov.cn:732/cms-business/apasDirectory/getReviewpoint"
 }
 
 # 请求过程中的参数
@@ -79,6 +81,11 @@ parameter = {
     "downloadAttachment": {
         "unid":""
     },
+
+    # 处理核查标准
+    "materialCheckStandard": {
+        "materialUnid":""
+    }
 }
 
 

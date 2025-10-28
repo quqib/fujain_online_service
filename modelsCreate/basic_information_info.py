@@ -1,10 +1,8 @@
 """
 基本信息表
 """
-from sqlalchemy import Column, String, LargeBinary, Date
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+from sqlalchemy import Column, String, DateTime, Text, func
+from .base import Base
 
 class BasicInformationInfo(Base):
     __tablename__ = 'basic_information_info'
@@ -21,20 +19,23 @@ class BasicInformationInfo(Base):
     item_code = Column(String(50), nullable=True, index=True, comment='事项编码')
 
     # 办理条件
-    handling_conditions = Column(String(2000), nullable=True, comment='办理条件')
-    handling_basis = Column(String(2000), nullable=True, comment='办理条件设立依据')
+    handling_conditions = Column(Text, nullable=True, comment='办理条件')
+    handling_basis = Column(Text, nullable=True, comment='办理条件设立依据')
 
     # 收费信息
     is_charging = Column(String(2), nullable=True, comment='是否收费')  # 建议：'1'=是，'0'=否
 
-    # 流程图（可存储为图片二进制或文件路径）
-    process_diagram = Column(LargeBinary, nullable=True, comment='办理流程图')  # 存储为 BLOB
+    # 收费类型
+    charge_items = Column(String(2000), nullable=True, comment='收费类型')
 
-    # 审批结果材料（二进制存储，如 PDF、版式文件等）
-    approval_result_material = Column(LargeBinary, nullable=True, comment='审批结果材料')
+    # 项目名称
+    dir_name = Column(String(200), nullable=True, comment='项目名称')
+
+    # 项目链接
+    dir_link = Column(String(2000), nullable=True, comment='项目链接')
 
     # 审计字段
-    create_date = Column(Date, nullable=True, comment='创建日期')
+    create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建日期')
     # update_date = Column(Date, nullable=True, comment='更新时间')
     # state = Column(String(1), nullable=True, comment='状态')  # 状态：如 '1'=有效，'0'=无效
 
