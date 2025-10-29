@@ -127,6 +127,7 @@ def get_message(unid):
             materialList = [directory]
 
         for material in materialList:
+            # time.sleep(random.randint(2, 3))
             application_materials.append({
                 "unid": material.get("unid"),
                 "situationTitle": situationTitle,
@@ -172,7 +173,7 @@ def deal_material_check_standard(id):
     rpName = ""
     params = parameter["materialCheckStandard"].copy()
     params["materialUnid"] = id
-    time.sleep(random.randint(4, 8))
+    # time.sleep(random.randint(2, 3))
     res = requests.get(
         url=urlConfig.get("materialCheckStandardUrl"),
         params=params,
@@ -191,7 +192,7 @@ def deal_material_check_standard(id):
 def download_file(id):
     params = parameter["downloadAttachment"].copy()
     params["unid"] = id
-    time.sleep(random.randint(4, 8))
+    time.sleep(random.randint(1, 3))
     res = requests.get(
         url=urlConfig.get("downloadAttachmentUrl"),
         params=params,
