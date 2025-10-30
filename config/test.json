@@ -1,43 +1,65 @@
 {
-  "industryCodeGb": "09",
-  "dirGrade": "1",
-  "chargeFlag": "1",
-  "deptName": "福建省公安厅",
-  "unid": "FEBEC44EB7BDBA7B53EF01ED006936EE",
-  "handleTowinmaxnum": "2",
-  "handleLaw": "[法律][法律]《中华人民共和国道路交通安全法》（中华人民共和国主席令第47号）\r\n第二十四条第一款　　公安机关交通管理部门对机动车驾驶人违反道路交通安全法律、法规的行为，除依法给予行政处罚外，实行累积记分制度。公安机关交通管理部门对累积记分达到规定分值的机动车驾驶人，扣留机动车驾驶证，对其进行道路交通安全法律、法规教育，重新考试；考试合格的，发还其机动车驾驶证。",
-  "proceflowFileunidOnline": null,
-  "remark": "承诺时限指驾驶人参加7日道路交通安全法律法规和相关知识学习后，公安交通管理部门在20日内安排考试，考试合格的，当场发还被扣留的机动车驾驶证。",
-  "proceflowFileunidScene": "59AC938B6E66D7D3DAAB630078BC34AD",
-  "dirStatus": "1",
-  "modifyTime": "2025-04-09 16:16:53",
-  "parentUnid": "1FDB0FE3FDC16F216B7059EA8F82780C",
-  "createUsername": "admin",
-  "handleContent": "一个记分周期记满12分但未达24分的机动车驾驶人。",
-  "localZoning": null,
-  "dirCode": "35100902200200",
-  "chargeItems": "考试费",
-  "dirAnticipateday": "1",
-  "resultExampleguid": "18191DC28B39543A6A36A15765196EA1",
-  "modifyUsername": "陈军武",
-  "subsortid": "00",
-  "createUserid": "1000D01F",
-  "dirPromiseday": "1",
-  "modifyUserid": "2BA37129F525078225CFC41D5BEB5940",
-  "handleStar": "1",
-  "dirType": "其他行政权力",
-  "deptUnid": "79E52921C73E4C8E8C1135B895C8BA68",
-  "resultFormguid": "EA1E238DFE18883B5D90F5961F7DA7E1",
-  "dirAlias": "记满12分但未达24分学习考试",
-  "parentName": "机动车驾驶人学习教育考试",
-  "areaCode": "350000",
-  "proceflowFileunidHandling": "EFD7F6D686A5ED8E99F9322AF2A416E9",
-  "createTime": "2020-10-21 09:59:38",
-  "sortid": "002",
-  "industryCodePv": "05",
-  "dirNameExplain": null,
-  "dirUseLevel": "3,4",
-  "dirVersion": "5",
-  "dirOrdernum": "2",
-  "dirName": "机动车驾驶人一个记分周期记满12分但未达24分的学习考试"
+  "msg": null,
+  "total": null,
+  "code": 200,
+  "data": [
+    {
+      "dict": {
+        "unid": "BF2C8C60EA42F62AB0EC934C154AA869",
+        "createtime": "2014-10-18 19:42:11",
+        "dictvalue": "02",
+        "sortid": "2",
+        "parentunid": "586784CE78431446AA438FC6580F1E1A",
+        "dictname": "【Ⅱ级（三星）】该事项已经实现申请材料在线预审。申请人可以通过网络提交和补正相关申请信息和材料，审核机构在平台对材料进行预审，预审通过后，申请人仍需携带纸质材料和相关证件到现场提交办理，作出审批决定后，申请人可来现场领取结果，也可选择物流递送形式递送证书结果。整个办理过程应到现场不超过2次。",
+        "appUnid": "D0971696C2081F86689F1FE0851AA4C6",
+        "memo": null,
+        "subsystemUnid": null,
+        "state": "Y",
+        "dicttype": "ACCEPT_TYPES",
+        "deptUnid": "88001"
+      }
+    },
+    {
+      "dict": {
+        "unid": "85E19084C56C7ACD2C28AFC7859839F6",
+        "createtime": "2014-10-18 19:42:17",
+        "dictvalue": "03",
+        "sortid": "3",
+        "parentunid": "586784CE78431446AA438FC6580F1E1A",
+        "dictname": "【Ⅲ级（四星）】该事项已经实现申请材料在线核验。申请人可以通过网络提交和补正相关申请信息和材料，材料符合办理条件直接进入办理程序，申请人可网上查询办理状态、咨询问题，作出审批决定后，申请人需到现场核验原件材料、缴费后领取证书结果。整个办事过程应到大厅现场不超过1次。",
+        "appUnid": "D0971696C2081F86689F1FE0851AA4C6",
+        "memo": null,
+        "subsystemUnid": null,
+        "state": "Y",
+        "dicttype": "ACCEPT_TYPES",
+        "deptUnid": "88001"
+      }
+    },
+    {
+      "dict": {
+        "unid": "1937D10A296DA483EB99491079D1389A",
+        "createtime": "2014-10-18 19:42:26",
+        "dictvalue": "04",
+        "sortid": "4",
+        "parentunid": "586784CE78431446AA438FC6580F1E1A",
+        "dictname": "【Ⅳ级（五星）】该事项已经实现全程网办。申请人可以通过网络提交和补正相关申请信息和材料，审批机构对所提交的材料进行网上验证，受理通过后直接进入办理程序，申请人可网上查询办理状态、咨询问题，作出审批决定后，申请人可以通过网上缴费后物流递送证书结果。整个办事过程无需到现场办理。",
+        "appUnid": "D0971696C2081F86689F1FE0851AA4C6",
+        "memo": null,
+        "subsystemUnid": null,
+        "state": "Y",
+        "dicttype": "ACCEPT_TYPES",
+        "deptUnid": "88001"
+      },
+      "accept": {
+        "unid": "F8B0582A365552FB9247B678A952D7A4",
+        "towinmaxnum": "0",
+        "postinfo": null,
+        "accounttype": "GENERAL,ELECTRONIC",
+        "towininfo": "邮递送达",
+        "accountTypeName": "普通注册帐号,CA帐号",
+        "serviceid": "F8B0582A365552FB9247B678A952D7AF",
+        "accepttype": "04"
+      }
+    }
+  ]
 }

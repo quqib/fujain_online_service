@@ -1,3 +1,5 @@
+from config.seetings import unid_list_all, unid_list_seeting, unid_list_check
+
 # 对比两个列表取出不同的文件
 def get_missing_in_list(unid_list, db_rowguid_set):
     try:

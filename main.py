@@ -4,25 +4,25 @@ from sprider.unid_page_sprider import get_message
 from storage.storage_message import save_all
 from storage.db import init_db
 from utils.util import get_missing_in_list
-from config.seetings import unid_list_seeting
+from config.seetings import unid_list_seeting, unid_list_check
 
 
 def main():
     # 初始化数据库
     init_db()
     # 获取列表(unid)
-    unid_list = fetch_all_unids()
-    print(unid_list)
-    print(len(unid_list))
+    # unid_list = fetch_all_unids()
+    # print(unid_list)
+    # print(len(unid_list))
 
     # === 关键：找到起始 unid 的索引，然后切片 ===
-    # start_unid = "8084C0E40B534AC906CC0DACCA80DF90"
-    # start_index = unid_list.index(start_unid)
-    # print(f"找到起始 unid: {start_unid}，位于列表第 {start_index} 位")
+    start_unid = "054982D86A0E69FE9CDC04DB0E652472"
+    start_index = unid_list_check.index(start_unid)
+    print(f"找到起始 unid: {start_unid}，位于列表第 {start_index} 位")
     #
     # # 只处理从该位置开始（含）之后的所有 unid
-    # unids_to_process = unid_list[start_index:]
-    unid_list_check = get_missing_in_list(unid_list_seeting, unid_list)
+    unids_to_process = unid_list_check[start_index:]
+    # unid_list_check = get_missing_in_list(unid_list_seeting, unid_list)
 
     # # unid_list = ["unid1", "unid2", "unid3"]  # 测试列表
     # # for unid in unid_list:
@@ -51,7 +51,7 @@ def main():
     # 使用线程池并发执行
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # 提交所有任务
-        futures = [executor.submit(process_single_unid, unid) for unid in unid_list_check]
+        futures = [executor.submit(process_single_unid, unid) for unid in unids_to_process]
 
         # 可选：等待全部完成（as_completed 可以实时输出结果）
         for future in as_completed(futures):

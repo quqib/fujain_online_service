@@ -36,7 +36,7 @@ def fetch_all_unids():
             # if page == 2:
             #     break
             print(f"运行至{page}页")
-            time.sleep(random.randint(1, 5))
+            time.sleep(random.randint(5, 10))
             parameter.get("secondaryPage")['pageNum'] = str(page)
             res = requests.get(
                 url=urlConfig.get("secondaryPageUrl"),
