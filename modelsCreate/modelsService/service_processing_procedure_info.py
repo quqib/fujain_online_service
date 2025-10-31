@@ -26,8 +26,8 @@ class ServiceProcessingProcedureInfo(Base):
         comment='关联 service_basic_information_info 表的主键'
     )
 
-    # 办理流程（1-申请与受理 2-审查 3-决定）
-    procedure_name = Column(String(2), nullable=True, comment='办理流程')
+    # 办理流程
+    procedure_name = Column(String(50), nullable=True, comment='办理流程')
 
     # 步骤类型
     step_type = Column(String(500), nullable=True, comment='步骤类型')

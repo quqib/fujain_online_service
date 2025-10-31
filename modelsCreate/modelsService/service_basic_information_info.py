@@ -101,6 +101,8 @@ class ServiceBasicInformationInfo(Base):
     must_on_site_reason = Column(Text, nullable=True, comment='必须现场办理原因')
 
     # 企业办事主题
+    person_theme = Column(String(255), nullable=True, comment='个人办事主题')
+    # 企业办事主题
     enterprise_theme = Column(String(255), nullable=True, comment='企业办事主题')
     # 网上办理深度
     online_depth = Column(String(32), nullable=True, comment='网上办理深度')
@@ -128,6 +130,8 @@ class ServiceBasicInformationInfo(Base):
     has_reservation = Column(Boolean, nullable=True, comment='是否开通预约服务')
     # 是否支持自助终端办理
     support_self_service_terminal = Column(Boolean, nullable=True, comment='是否支持自助终端办理')
+    # 面向自然人地方特色主题分类
+    individual_theme_category = Column(String(255), nullable=True, comment='面向法人地方特色主题分类')
     # 面向法人地方特色主题分类
     corporate_theme_category = Column(String(255), nullable=True, comment='面向法人地方特色主题分类')
 
@@ -151,14 +155,19 @@ class ServiceBasicInformationInfo(Base):
     support_online_payment = Column(Boolean, nullable=True, comment='是否支持网上支付')
 
     # 事项状态
-    status = Column(String(32), nullable=True, comment='事项状态')
+    status = Column(String(200), nullable=True, comment='事项状态')
     # 是否全程代办
     full_proxy_enabled = Column(Boolean, nullable=True, comment='是否全程代办')
 
+    # 是否收费
+    charge_limit = Column(String(50), nullable=True, comment='是否收费')
+
     # 备注
     remarks = Column(Text, nullable=True, comment='备注')
-    # 常见问题
-    frequently_asked_questions = Column(Text, nullable=True, comment='常见问题')
+
+    # 项目链接
+    dir_link = Column(String(2000), nullable=True, comment='项目链接')
+
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建时间')
 

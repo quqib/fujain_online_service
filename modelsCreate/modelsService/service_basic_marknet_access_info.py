@@ -25,6 +25,9 @@ class ServiceBasicMarknetAccessInfo(Base):
         nullable=False,
         comment='关联 service_basic_information_info 表的主键'
     )
+    # 负面清单表名 进入页面前拿到的那个名称
+    market_name = Column(String(200), nullable=True, comment='负面清单表名')
+
     # ================== 基础信息 ==================
     # 负面清单版本（在用）
     market_negativate_version = Column(String(50), nullable=True, comment='负面清单版本')

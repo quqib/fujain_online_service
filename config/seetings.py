@@ -9,11 +9,11 @@ DB_CONFIG = {
 }
 
 # DB_CONFIG = {
-#     'host': '192.168.10.110',
+#     'host': '192.168.3.9',
 #     'port': 3306,
 #     'user': 'root',
-#     'password': 'root123',
-#     'database': 'online_service',
+#     'password': 'Zy20250901!',
+#     'database': 'online_service_remote',
 #     'charset': 'utf8mb4'
 # }
 
@@ -56,8 +56,14 @@ urlConfig = {
     "serviceUnidPageUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/getMatterBasicInfo",
     # 网上办理
     "onlineUnidPageUrl":"https://zwfw.fujian.gov.cn:732/cms-business/apasService/getAcceptList",
-
-
+    # 办理流程
+    "processingProcedureUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/getFlowNode",
+    # 常见问题
+    "frequentlyAskedQuestionsUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/getNoticeListByServiceId",
+    # 市场准入负面清单许可准入措施
+    "marketAccessUrl": "https://zwfw.fujian.gov.cn:732/cms-business/marcket/measuresDetail",
+    # 权责清单
+    "responsibilityAuthoritiesUrl": "https://zwfw.fujian.gov.cn:732/cms-business/listingDetail/getPowerDetail"
 }
 
 # 请求过程中的参数
@@ -102,6 +108,27 @@ parameter = {
     # 网上办理
     "onlineUnidPage": {
         "unid":""
+    },
+    # 办理流程
+    "processingProcedure": {
+        "serviceId":""
+    },
+    # 常见问题
+    "frequentlyAskedQuestions": {
+        "unid": "",
+        "pageNum": 1,
+        "pageSize": -1,
+        "infoType": 1
+    },
+    # 市场准入负面清单许可准入措施
+    "marketAccess": {
+        "id": ""
+    },
+    # 权责清单
+    "responsibilityAuthorities": {
+        "powerunid": "",
+        "type": 1,
+        "authId": ""
     }
 
 }
