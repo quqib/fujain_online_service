@@ -231,7 +231,7 @@ def service_get_message(unid):
             # 负面清单事项措施编码
             "measures_code": measures.get("code"),
             # 地方性许可措施
-            "": measures.get(""),
+            "localLicensingMeasures": measures.get("localLicensingMeasures"),
             # 适用范围
             "": measures.get(""),
             # 事项措施状态
@@ -241,9 +241,9 @@ def service_get_message(unid):
             # 是否暂时列入清单
             "": measures.get(""),
             # 计划生效日期
-            "": measures.get(""),
+            "takeEffectDate": measures.get("takeEffectDate"),
             # 计划取消日期
-            "": measures.get(""),
+            "cancelDate": measures.get("cancelDate"),
 
             # 措施匹配
             "measureMatching": measureMatching,
@@ -258,7 +258,7 @@ def service_get_message(unid):
 
     res_responsibity_author= requests.get(
         url=urlConfig.get("responsibilityAuthoritiesUrl"),
-        params=params_market_access,
+        params=params_responsibity_author,
         headers=headers,
         timeout=30
     )
@@ -294,7 +294,7 @@ def service_get_message(unid):
         # 办理地点
         "acceptAddress": applyMethod.get("acceptAddress"),
         # 交通指引
-        "trafficGuide": applyMethod.get("trafficGuide")
+        "trafficGuide": applyMethod.get("trafficGuide"),
         # 受理条件
         "applyTerm": applyMethod.get("applyMethod"),
     }

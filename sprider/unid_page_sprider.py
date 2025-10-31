@@ -97,7 +97,7 @@ def get_message(unid):
         })
 
     # -------------------------------
-    # 4.获取申报材料
+    # 4.获取申报材料-此处需要存储父子结构
     # -------------------------------
     res_materials = requests.get(
         url=urlConfig.get("applicationMaterialsUrl"),
