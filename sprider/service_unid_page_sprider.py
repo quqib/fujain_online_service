@@ -132,11 +132,11 @@ def service_get_message(unid):
         "nearbyInstruction": apasDirectory.get("nearbyInstruction"),
 
         # 是否全国高频“跨省通办”事项
-        "dirName": apasDirectory.get("dirName"),
+        "highFrequencyKstb": apasDirectory.get("highFrequencyKstb"),
         # 跨省通办模式
-        "dirName": apasDirectory.get("webApplyDegreeName"),
+        "webApplyDegreeName": apasDirectory.get("webApplyDegreeName"),
         # 跨省代收代办区域
-        "dirName": apasDirectory.get("dirName"),
+        "kstbOutAreaname": apasDirectory.get("kstbOutAreaname"),
 
         # 计划生效日期
         "planEnableDate": apasDirectory.get("planEnableDate"),
@@ -144,9 +144,9 @@ def service_get_message(unid):
         "planCancelDate": apasDirectory.get("planCancelDate"),
 
         # 是否开通预约服务
-        "dirName": apasDirectory.get("dirName"),
+        "isSubscribeService": apasDirectory.get("isSubscribeService"),
         # 是否支持自助终端办理
-        "dirName": apasDirectory.get("dirName"),
+        "terminalSupport": apasDirectory.get("terminalSupport"),
         # 面向自然人地方特色主题分类
         "personalThemeCategory": apasDirectory.get("personalThemeCategory"),
         # 面向法人地方特色主题分类
@@ -173,8 +173,8 @@ def service_get_message(unid):
 
         # 事项状态
         "state": apasDirectory.get("state"),
-        # 是否全程代办
-        "dirName": apasDirectory.get("dirName"),
+        # 是否全程代办 N代表否 Y代表是
+        "agentFlag": apasDirectory.get("agentFlag"),
 
         # 备注
         "iremark": apasDirectory.get("iremark"),

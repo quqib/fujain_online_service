@@ -1,6 +1,15 @@
 # 数据库连接配置
+# DB_CONFIG = {
+#     'host': '172.16.30.106',
+#     'port': 3306,
+#     'user': 'root',
+#     'password': 'root123',
+#     'database': 'online_service_create',
+#     'charset': 'utf8mb4'
+# }
+
 DB_CONFIG = {
-    'host': '172.16.30.106',
+    'host': 'localhost',
     'port': 3306,
     'user': 'root',
     'password': 'root123',
@@ -9,11 +18,11 @@ DB_CONFIG = {
 }
 
 # DB_CONFIG = {
-#     'host': '192.168.3.9',
+#     'host': '192.168.10.110',
 #     'port': 3306,
 #     'user': 'root',
-#     'password': 'Zy20250901!',
-#     'database': 'online_service_remote',
+#     'password': 'root123',
+#     'database': 'online_service',
 #     'charset': 'utf8mb4'
 # }
 

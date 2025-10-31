@@ -128,7 +128,7 @@ def save_service_all(parsed: dict):
             planned_cancel_date=service_basic.get("planCancelDate"),
 
             # 是否开通预约服务
-            dir_name=service_basic.get("dirName"),
+            dir_name=service_basic.get("isSubscribeService"),
             # 是否支持自助终端办理
             dir_name=service_basic.get("dirName"),
             # 面向自然人地方特色主题分类
