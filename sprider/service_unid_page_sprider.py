@@ -231,15 +231,15 @@ def service_get_message(unid):
             # 负面清单事项措施编码
             "measures_code": measures.get("code"),
             # 地方性许可措施
-            "localLicensingMeasures": measures.get("localLicensingMeasures"),
+            "localLicensing": measures.get("localLicensing"),
             # 适用范围
-            "": measures.get(""),
+            "scope": measures.get("scope"),
             # 事项措施状态
-            "": measures.get("status"),
+            "status": measures.get("status"),
             # 负面清单事项措施版本
-            "": measures.get("version"),
+            "version": measures.get("version"),
             # 是否暂时列入清单
-            "": measures.get(""),
+            "included": measures.get("included"),
             # 计划生效日期
             "takeEffectDate": measures.get("takeEffectDate"),
             # 计划取消日期
