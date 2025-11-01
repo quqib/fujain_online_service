@@ -73,6 +73,8 @@ urlConfig = {
     "marketAccessUrl": "https://zwfw.fujian.gov.cn:732/cms-business/marcket/measuresDetail",
     # 权责清单
     "responsibilityAuthoritiesUrl": "https://zwfw.fujian.gov.cn:732/cms-business/listingDetail/getPowerDetail",
+    # 一件事集成套餐
+    "OneThingPackageUrl": "https://zwfw.fujian.gov.cn:732/cms-business/package/getPackageName",
     # 三级页面申报材料
     "sriviceApplicationMaterialsUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/getMaterialList",
     # 三级页面申报材料核查信息
@@ -145,6 +147,10 @@ parameter = {
         "powerunid": "",
         "type": 1,
         "authId": ""
+    },
+    # 一件事集成套餐
+    "OneThingPackage": {
+        "serviceUnid":""
     },
     # 三级页面 申报材料
     "sriviceApplicationMaterials": {

@@ -44,7 +44,7 @@ def service_get_message(unid):
         # 业务办理项编码
         "taskHandleItem": apasDirectory.get("taskHandleItem"),
 
-        # 办件类型
+        # 办件类型()
         "servicetype": apasDirectory.get("servicetype"),
         # 事项类型
         "addTypeName": apasDirectory.get("addTypeName"),
@@ -64,8 +64,8 @@ def service_get_message(unid):
         "deptPropertyName": apasDirectory.get("deptPropertyName"),
         # 委托部门
         "deptEntrust": apasDirectory.get("deptEntrust"),
-        # 联办机构
-        "dirName": apasDirectory.get("dirName"),
+        # 联办机构 当servicetype为联办件的时候才会显示
+        "coopOrg": apasDirectory.get("coopOrg"),
         # 主办处室
         "leadDept": apasDirectory.get("leadDept"),
 
@@ -78,7 +78,7 @@ def service_get_message(unid):
 
 
         # 一件事集成套餐
-        "dirName": apasDirectory.get("dirName"),
+        # "dirName": apasDirectory.get("dirName"),
 
         # 市场准入负面清单许可准入措施(这里返回的也是一个列表，需要处理unid name表数据写入)
         "marketAccessList": apasDirectory.get("marketAccessList"),
