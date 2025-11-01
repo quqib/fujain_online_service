@@ -72,7 +72,14 @@ urlConfig = {
     # 市场准入负面清单许可准入措施
     "marketAccessUrl": "https://zwfw.fujian.gov.cn:732/cms-business/marcket/measuresDetail",
     # 权责清单
-    "responsibilityAuthoritiesUrl": "https://zwfw.fujian.gov.cn:732/cms-business/listingDetail/getPowerDetail"
+    "responsibilityAuthoritiesUrl": "https://zwfw.fujian.gov.cn:732/cms-business/listingDetail/getPowerDetail",
+    # 三级页面申报材料
+    "sriviceApplicationMaterialsUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/getMaterialList",
+    # 三级页面申报材料核查信息
+    "materialVerificationInformationUrl": "https://zwfw.fujian.gov.cn:732/cms-business/preview/checkMaterialConfig",
+    # 三级页面获取附件信息
+    "getAttachmentInformationUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/getTableInfo",
+
 }
 
 # 请求过程中的参数
@@ -138,8 +145,23 @@ parameter = {
         "powerunid": "",
         "type": 1,
         "authId": ""
+    },
+    # 三级页面 申报材料
+    "sriviceApplicationMaterials": {
+        "unid": "",
+        "situationUnid": "",
+        "isMatmultiple": "Y"
+    },
+    # 三级页面申报材料核查信息
+    "materialVerificationInformation": {
+        "itemUnid": "",
+        "materialName": "",
+        "materialUnid": ""
+    },
+    # 三级页面获取附件信息
+    "getAttachmentInformation": {
+        "serviceId": ""
     }
-
 }
 
 

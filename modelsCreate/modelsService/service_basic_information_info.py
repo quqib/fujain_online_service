@@ -118,6 +118,8 @@ class ServiceBasicInformationInfo(Base):
     is_national_cross_province = Column(Boolean, nullable=True, comment='是否全国高频“跨省通办”事项')
     # 跨省通办模式
     cross_province_mode = Column(String(64), nullable=True, comment='跨省通办模式')
+    # 跨省通办模式说明
+    cross_province_explain = Column(Text, nullable=True, comment='跨省通办模式')
     # 跨省代收代办区域
     cross_province_areas = Column(Text, nullable=True, comment='跨省代收代办区域')
 

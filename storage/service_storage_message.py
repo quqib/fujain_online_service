@@ -1,6 +1,7 @@
 from .db import SessionLocal
 from modelsCreate.modelsService.service_basic_information_info import ServiceBasicInformationInfo
 from modelsCreate.modelsService.service_basic_marknet_access_info import ServiceBasicMarknetAccessInfo
+from modelsCreate.modelsService.service_basic_special_segment_info import ServiceBasicSpecialSegmentInfo
 from modelsCreate.modelsService.service_basic_duty_info import ServiceBasicDutyInfo
 from modelsCreate.modelsService.service_counter_service_info import ServiceCounterServiceInfo
 from modelsCreate.modelsService.service_online_processing_info import ServiceOnlineProcessingInfo
@@ -56,7 +57,7 @@ def save_service_all(parsed: dict):
             # 实施主体性质
             body_nature=service_basic.get("deptPropertyName"),
             # 委托部门
-            entrusted_department=service_basic.get("dirName"),
+            entrusted_department=service_basic.get("deptEntrust"),
             # 联办机构
             joint_agencies=service_basic.get("dirName"),
             # 主办处室
@@ -70,13 +71,13 @@ def save_service_all(parsed: dict):
             supervision_phone=service_basic.get("monitorcomplain"),
 
             # 特殊环节
-            special_links=service_basic.get("specialMode"),
+            special_links=service_basic.get("specialList"),
             # 一件事集成套餐
             dir_name=service_basic.get("dirName"),
             # 市场准入负面清单许可准入措施
             market_access_measures=service_basic.get("marketAccessList"),
             # 中介服务
-            dir_name=service_basic.get("dirName"),
+            intermediary_services=service_basic.get("intermediaryServicesList"),
             # 权责清单
             responsibility_list=service_basic.get("liabilityName"),
 
@@ -87,7 +88,7 @@ def save_service_all(parsed: dict):
             # 审批结果样本
             approval_result_sample=service_basic.get("resultFile"),
             # 审批结果共享
-            dir_name=service_basic.get("dirName"),
+            approval_result_share=service_basic.get("finishType"),
             # 结果领取方式
             result_receive_method=service_basic.get("finishGetTypeName"),
             # 结果领取说明
@@ -97,7 +98,7 @@ def save_service_all(parsed: dict):
             applicant_type=service_basic.get("userType"),
 
             # 是否进驻政务大厅
-            dir_name=service_basic.get("dirName"),
+            in_service_hall=service_basic.get("enterif"),
             # 办理形式
             handling_form=service_basic.get("handleForm"),
             # 必须现场办理原因
@@ -116,11 +117,13 @@ def save_service_all(parsed: dict):
             coverage_description=service_basic.get("nearbyInstruction"),
 
             # 是否全国高频“跨省通办”事项
-            dir_name=service_basic.get("dirName"),
+            is_national_cross_province=service_basic.get("highFrequencyKstb"),
             # 跨省通办模式（将网上办理深度括号外的提取出来）
-            dir_name=service_basic.get("dirName"),
+            cross_province_mode=service_basic.get("webApplyDegreeName"),
+            # 跨省通办模式说明
+            cross_province_explain=service_basic.get("kstbModel"),
             # 跨省代收代办区域
-            dir_name=service_basic.get("dirName"),
+            cross_province_areas=service_basic.get("kstbOutAreaname"),
 
             # 计划生效日期
             planned_effective_date=service_basic.get("planEnableDate"),
@@ -128,9 +131,9 @@ def save_service_all(parsed: dict):
             planned_cancel_date=service_basic.get("planCancelDate"),
 
             # 是否开通预约服务
-            dir_name=service_basic.get("isSubscribeService"),
+            has_reservation=service_basic.get("isSubscribeService"),
             # 是否支持自助终端办理
-            dir_name=service_basic.get("dirName"),
+            support_self_service_terminal=service_basic.get("terminalSupport"),
             # 面向自然人地方特色主题分类
             individual_theme_category=service_basic.get("personalThemeCategory"),
             # 面向法人地方特色主题分类
@@ -157,8 +160,8 @@ def save_service_all(parsed: dict):
 
             # 事项状态
             status=service_basic.get("state"),
-            # 是否全程代办
-            dir_name=service_basic.get("dirName"),
+            # 是否全程代办 N代表否 Y代表是
+            full_proxy_enabled=service_basic.get("agentFlag"),
 
             # 是否收费
             charge_limit=service_basic.get("chargeLimit"),
@@ -171,6 +174,25 @@ def save_service_all(parsed: dict):
         )
         session.add(service_basic_obj)
         session.flush()
+
+        # 存储特殊环节-使用for循环写入
+        service_section_list = parsed.get("service_section_list", [])
+        if service_section_list:
+            for service_section in service_section_list:
+                service_section_obj = ServiceBasicSpecialSegmentInfo(
+                    # 外键
+                    basic_info_rowguid=service_basic.get("unid"),
+                    # 特殊环节名称
+                    section_name=service_section.get("sname"),
+                    # 特殊环节时限
+                    section_time_limit=service_section.get("sday"),
+                    # 特殊环节依据
+                    Section_basis=service_section.get("sconent"),
+                    # 特殊环节备注
+                    Section_remark=service_section.get("sremark"),
+                )
+                session.add(service_section_obj)
+
 
         # 存储市场准入负面清单许可准入措施列表使用for循环进行写入
         service_market_access = parsed.get("service_market_access", [])
@@ -199,19 +221,19 @@ def save_service_all(parsed: dict):
                     # 负面清单事项措施编码
                     market_negativate_measure_code=service_market_acces.get("measures_code"),
                     # 地方性许可措施
-                    local_license_measure=service_market_acces.get("name"),
+                    local_license_measure=service_market_acces.get("localLicensing"),
                     # 适用范围
-                    applicable_scope=service_market_acces.get("name"),
+                    applicable_scope=service_market_acces.get("scope"),
                     # 事项措施状态
-                    market_negativate_measure_status=service_market_acces.get("name"),
+                    market_negativate_measure_status=service_market_acces.get("status"),
                     # 负面清单事项措施版本
-                    market_negativate_measure_version=service_market_acces.get("name"),
+                    market_negativate_measure_version=service_market_acces.get("version"),
                     # 是否暂时列入清单
-                    is_temporarily_included=service_market_acces.get("name"),
+                    is_temporarily_included=service_market_acces.get("included"),
                     # 计划生效日期
-                    planned_effective_date=service_market_acces.get("name"),
+                    planned_effective_date=service_market_acces.get("takeEffectDate"),
                     # 计划取消日期
-                    planned_cancel_date=service_market_acces.get("name"),
+                    planned_cancel_date=service_market_acces.get("cancelDate"),
 
                     # 关联的政务服务事项基本目录
                     associated_service_item=service_market_acces.get("measureMatching"),

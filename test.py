@@ -1,4 +1,5 @@
 import requests
+from config.seetings import headers
 
 url = 'https://zwfw.fujian.gov.cn:732/cms-business/preview/checkMaterialConfig'
 
@@ -8,12 +9,21 @@ data = {
     "materialUnid": "2F2C95174FF97C120AA5F61F59F1382B"
 }
 
-res = requests.post(url, json=data, timeout=30)
-print(res.status_code)
-print(res.text)
+data1 = {
+    "itemUnid": "C3403F1804931F148C595324F012257E",
+    "materialName": "《林草种子生产经营许可证》申请表（种子类、苗木类）",
+    "materialUnid": "94E464A1F5C0F33B4B2132BDDD1295F5"
+}
 
+res = requests.post(url, json=data1, timeout=30)
+
+
+# print(res.status_code)
+# print(res.text)
+#
+# exit()
 """
-解析页面数据，存放为父子结构
+解析页面数据，存放为父子结构 这边是查看的结构
 """
 
 all_node = []
@@ -39,8 +49,3 @@ def get_message_children(data):
 get_message_children(res.json().get("data"))
 
 print(all_node)
-
-
-
-
-

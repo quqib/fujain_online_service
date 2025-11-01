@@ -18,12 +18,12 @@ class ServiceApplicationMaterialInfo(Base):
         comment='主键，UUID 自动生成'
     )
 
-    # 外键：关联到 basic_information_info 表的 rowguid
+    # 外键：关联到 service_basic_information_info 表的 rowguid
     basic_info_rowguid = Column(
         CHAR(36),
-        ForeignKey('basic_information_info.rowguid', ondelete='CASCADE'),
+        ForeignKey('service_basic_information_info.rowguid', ondelete='CASCADE'),
         nullable=False,
-        comment='关联 basic_information_info 表的主键'
+        comment='关联 service_basic_information_info 表的主键'
     )
 
     # 文件类型
@@ -46,6 +46,9 @@ class ServiceApplicationMaterialInfo(Base):
 
     # 设立依据
     basis_of_establishment = Column(Text, nullable=True, comment='设立依据')
+
+    # 填报须知
+    filling_instructions = Column(Text, nullable=True, comment='填报须知')
 
     # 附件下载（存储文件二进制或路径 格式文本 示范文本）
     material_formguid = Column(LONGBLOB, nullable=True, comment='附件下载格式文本')

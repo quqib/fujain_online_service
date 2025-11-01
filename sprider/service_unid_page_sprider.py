@@ -12,6 +12,10 @@ from config.seetings import headers, urlConfig, parameter
 
 
 def service_get_message(unid):
+
+    # 获取页面相关的附件用于后续附件的检索
+    data_attachment_information = get_attachment_information(unid)
+
     # -------------------------------
     # 1️.业务办理-获取基础信息
     # -------------------------------
@@ -72,16 +76,6 @@ def service_get_message(unid):
         # 监督投诉电话
         "monitorcomplain": apasDirectory.get("monitorcomplain"),
 
-        # 特殊环节
-        "specialMode": apasDirectory.get("specialMode"),
-        # 特殊环节-环节名称
-
-        # 特殊环节-环节时限
-
-        # 特殊环节-设定依据
-
-        # 特殊环节-备注
-
 
         # 一件事集成套餐
         "dirName": apasDirectory.get("dirName"),
@@ -89,8 +83,8 @@ def service_get_message(unid):
         # 市场准入负面清单许可准入措施(这里返回的也是一个列表，需要处理unid name表数据写入)
         "marketAccessList": apasDirectory.get("marketAccessList"),
 
-        # 中介服务
-        "dirName": apasDirectory.get("dirName"),
+        # 中介服务 注意这个是个列表
+        "intermediaryServicesList": apasDirectory.get("intermediaryServicesList"),
         # 权责清单
         "liabilityName": apasDirectory.get("liabilityName"), # 权责清单名称
 
@@ -100,8 +94,8 @@ def service_get_message(unid):
         "finishTypeName": apasDirectory.get("finishTypeName"),
         # 审批结果样本 (一个用于下载的字典)
         "resultFile": apasDirectory.get("resultFile"),
-        # 审批结果共享
-        "dirName": apasDirectory.get("dirName"),
+        # 审批结果共享(有值是 无值否)
+        "finishType": apasDirectory.get("finishType"),
         # 结果领取方式
         "finishGetTypeName": apasDirectory.get("finishGetTypeName"),
         # 结果领取说明
@@ -110,8 +104,8 @@ def service_get_message(unid):
         # 申报对象
         "userType": apasDirectory.get("userType"),
 
-        # 是否进驻政务大厅
-        "dirName": apasDirectory.get("dirName"),
+        # 是否进驻政务大厅 0否 1是
+        "enterif": apasDirectory.get("enterif"),
         # 办理形式
         "handleForm": apasDirectory.get("handleForm"),
         # 必须现场办理原因
@@ -133,8 +127,8 @@ def service_get_message(unid):
 
         # 是否全国高频“跨省通办”事项
         "highFrequencyKstb": apasDirectory.get("highFrequencyKstb"),
-        # 跨省通办模式
-        "webApplyDegreeName": apasDirectory.get("webApplyDegreeName"),
+        # 跨省通办模式说明
+        "kstbModel": rspApasServiceExtend.get("kstbModel"),
         # 跨省代收代办区域
         "kstbOutAreaname": apasDirectory.get("kstbOutAreaname"),
 
@@ -185,6 +179,23 @@ def service_get_message(unid):
         "dirLink": f"https://zwfw.fujian.gov.cn/standartCatalogGuide?unid={apasDirectory.get('unid')}"
     }
 
+    # -------------------------------
+    # 2.业务办理-特殊环节
+    # -------------------------------
+    specialList = apasDirectory.get("specialList")
+    service_section_list = []
+
+    for special in specialList:
+        service_section_list.append({
+            # 环节名称
+            "sname": special.get("sname"),
+            # 环节时限
+            "sday": special.get("sday"),
+            # 环节依据
+            "sconent": special.get("sconent"),
+            # 备注
+            "sremark": special.get("sremark"),
+        })
 
     # -------------------------------
     # 2.业务办理-市场准入负面清单许可准入措施
@@ -299,6 +310,38 @@ def service_get_message(unid):
         "applyTerm": applyMethod.get("applyMethod"),
     }
 
+    # -------------------------------
+    # 3.业务办理-申请材料
+    # -------------------------------
+    params_materials = parameter["sriviceApplicationMaterials"].copy()
+    params_materials["unid"] = unid
+    res_materials = requests.get(
+        url=urlConfig.get("sriviceApplicationMaterialsUrl"),
+        params=params_materials,
+        headers=headers,
+        timeout=30
+    )
+    data_materials = res_materials.json().get("data", {})
+
+    # 用来存储申报材料信息
+    application_materials = []
+    # 用来存储核查信息
+    service_material_verification = []
+
+    directoryList = data_materials.get("directoryList") or []
+
+    # 这种情况是既没有变更也没有其他的查询条件就需要获取noDirectoryList中的数据进行填充 命名为情况2
+    if not directoryList:
+        directoryList = data_materials.get("noDirectoryList") or []
+
+    # 对directoryList进行去重处理
+    materialCheckList = material_check_list(directoryList)
+
+    # 递归处理children 获取application_materials
+    get_application_materials(materialCheckList,
+                              application_materials,
+                              service_material_verification,
+                              data_attachment_information)
 
 
     # -------------------------------
@@ -400,10 +443,16 @@ def service_get_message(unid):
     return {
         # 基本信息
         "service_basic": service_basic,
+        # 特殊环节
+        "service_section_list": service_section_list,
         # 市场准入负面清单许可准入措施
         "service_market_access": service_market_access,
         # 权责清单
         "service_responsibity_author": service_responsibity_author,
+        # 申报材料
+        "service_application_materials": application_materials,
+        # 申报材料——核查数据
+        "service_material_verification": service_material_verification,
         # 窗口办理+受理条件
         "service_apply": service_apply,
         # 网上办理
@@ -426,7 +475,6 @@ def deal_material_check_standard(id):
     rpName = ""
     params = parameter["materialCheckStandard"].copy()
     params["materialUnid"] = id
-    # time.sleep(random.randint(2, 3))
     res = requests.get(
         url=urlConfig.get("materialCheckStandardUrl"),
         params=params,
@@ -440,6 +488,29 @@ def deal_material_check_standard(id):
             rpName += data.get("rpName") if data.get("rpName") else ""
 
     return rpName
+
+# 获取所有的附件信息
+def get_attachment_information(id):
+    params_attachment_information = parameter["getAttachmentInformation"].copy()
+    params_attachment_information["serviceId"] = "F8B0582A365552FB9247B678A952D7AF"
+    res_attachment_information = requests.get(
+        url=urlConfig.get("getAttachmentInformationUrl"),
+        params=params_attachment_information,
+        headers=headers,
+        timeout=30
+    )
+    data_attachment_information = res_attachment_information.json().get("data").get("tableList")
+
+    return data_attachment_information
+
+# 检索出相关的附件
+def get_check_attachment(data_list, target_punid, type):
+    # type 1样表 2空表
+    return [
+            item.get("fileunid")
+        for item in data_list
+        if item.get("punid") == target_punid and int(item.get("type")) == type
+    ]
 
 
 # 下载附件
@@ -489,16 +560,137 @@ def cleaned_imgfile(imgfile):
     cleaned_imgfile = [item for item in imgfile if isinstance(item, dict) and item.get("fileName") and item.get("fileUnid")]
     return cleaned_imgfile
 
+# 请求——材料核查标准
+def res_message_children(itemUnid, materialName, materialUnid):
+    params_material_erification = parameter["materialVerificationInformation"].copy()
+    params_material_erification["itemUnid"] = itemUnid
+    params_material_erification["materialName"] = materialName
+    params_material_erification["materialUnid"] = materialUnid
 
-# 处理业务办理-基本信息-特殊环节
-def get_special_list(specialList):
+    res_material_erification = requests.post(
+        url=urlConfig.get("materialVerificationInformationUrl"),
+        json=params_material_erification,
+        headers=headers,
+        timeout=30
+    )
 
-    for i, value in enumerate(specialList):
+    return res_material_erification.json().get("data")
 
-        pass
+# 抽取申报材料——材料核查标准
+def get_message_children(data, all_node):
+    childProblems = data.get("childProblems") if data.get("childProblems") else []
+    # 获取本身节点id
+    problemUnid = data.get("problemUnid")
+    # 获取父节点
+    parentProblemUnid = data.get("parentProblemUnid")
+    # 获取段落文本
+    problemName = data.get("problemName")
+
+    for childProblem in childProblems:
+        get_message_children(childProblem, all_node=all_node)
+
+    all_node.append({
+        "problemUnid": problemUnid,
+        "parentProblemUnid": parentProblemUnid,
+        "problemName": problemName,
+    })
+
+# 申报材料——中发现重复，进行去重处理
+def material_check_list(directoryList):
+    materialCheckList = []
+    seen_unids = set()  # 用于记录已添加的 material unid
+
+    for directory in directoryList:
+        # 判断是否为首次申请
+        materialClass = directory.get("materialClass", {})
+        situationTitle = 0 if materialClass.get("situationTitle") == "首次申请" else 1
+
+        # 抽取申报材料信息(返回结果为列表形式)
+        materialList = directory.get("material") or []
+        # 下面这种是判断是否为情况2
+        if not materialList and directory.get("materialName"):
+            materialList = [directory]
+
+        for material in materialList:
+            unid = material.get("unid")
+            material['situationTitle'] = situationTitle
+
+            # 如果 unid 已存在，则跳过
+            if unid in seen_unids:
+                continue
+
+            # 否则，标记为已见过，并添加到结果列表
+            seen_unids.add(unid)
+            materialCheckList.append(material)
+
+    return materialCheckList
 
 
-# 获取网上办理信息
-def get_onlion_message(data_online):
+# 申报材料——递归处理children
+def get_application_materials(materialList,
+                              application_materials,
+                              all_data,
+                              data_attachment_information,
+                              parent_unid=None):
 
-    pass
+    for material in materialList:
+        children = material.get("children")
+        if children:
+            # 添加父节点
+            application_materials.append({
+                "unid": material.get("unid"),
+                "name": material.get("name"),
+            })
+
+            # 递归处理子节点，将当前节点的unid作为父unid传递
+            get_application_materials(children,
+                                      application_materials=application_materials,
+                                      all_data=all_data,
+                                      data_attachment_information=data_attachment_information,
+                                      parent_unid=material.get("unid")
+                                      )
+
+        else:
+            # 请求链接获取材料核查标准信息
+            data_material_erification = res_message_children("F8B0582A365552FB9247B678A952D7AF",
+                                                             material.get("name"),
+                                                             material.get("unid"))
+            # 解析核查标准信息
+            get_message_children(data_material_erification, all_data)
+
+            application_materials.append({
+                "unid": material.get("unid"),
+                # 增加一个父节点
+                "parentUnid": parent_unid,
+                # 是否为首次申请
+                "situationTitle": material.get("situationTitle"),
+                # 文件类型
+                "materialName": material.get("name"),
+                # 材料形式(电子上传-upload,电子共享材料-license,paper-纸质")
+                "gettypeunids": material.get("gettypeunids"),
+                # 材料要求(材料类型 份数)
+                # 类型
+                "medium": material.get("medium"),
+                # 份数(如果类型是复印件使用参数pagecopynum)
+                "pagenum": material.get("pagecopynum") if material.get("medium")=="复印件" else material.get("pagenum"),
+                # 材料必要性(1-必要 2-非必要)
+                "necessityIf": material.get("necessityIf"),
+                # 来源渠道
+                "materialsrc": material.get("materialsrc"),
+                # 设立依据
+                "applyAccord": material.get("applyAccord"),
+                # 填报须知
+                "reportNotice": material.get("reportNotice"),
+                # 材料核查单独存表
+                # 附件下载
+                # 格式文本
+                "materialFormguid": download_file(
+                    get_check_attachment(data_attachment_information, material.get("unid"), type=2
+                                         )[0]),
+                # 示范文本
+                "materialExampleguid": download_file(
+                    get_check_attachment(data_attachment_information, material.get("unid"), type=1
+                                         )[0])
+            })
+
+

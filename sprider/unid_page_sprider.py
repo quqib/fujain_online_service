@@ -115,47 +115,11 @@ def get_message(unid):
     if not directoryList:
         directoryList = data_materials.get("noDirectoryList") or []
 
-    for directory in directoryList:
-        # 判断是否为首次申请
-        materialClass = directory.get("materialClass", {})
-        situationTitle = 0 if materialClass.get("situationTitle") == "首次申请" else 1
-        # 抽取申报材料信息(返回结果为列表形式)
-        materialList = directory.get("material") or []
+    # 对directoryList进行去重处理
+    materialCheckList = material_check_list(directoryList)
 
-        # 下面这种是判断是否为情况2
-        if not materialList and directory.get("materialName"):
-            materialList = [directory]
-
-        for material in materialList:
-            # time.sleep(random.randint(2, 3))
-            application_materials.append({
-                "unid": material.get("unid"),
-                "situationTitle": situationTitle,
-                # 文件类型
-                "materialName": material.get("materialName"),
-                # 材料形式(1-纸质，电子材料 2-电子材料 3-纸质 7-电子材料)
-                "materialOrdernum": material.get("materialOrdernum"),
-                # 材料要求(材料类型 份数)
-                # 类型
-                "materialMedium": material.get("materialMedium"),
-                # 份数
-                "materialPagenum": material.get("materialPagenum"),
-                # 材料必要性(1-必要)
-                "materialIsneed": material.get("materialIsneed"),
-                # 来源渠道
-                "materialSourcechannelName": material.get("materialSourcechannelName"),
-                # 具体要求
-                "materialPageformat": material.get("materialPageformat"),
-                # 设立依据
-                "materialLaw": material.get("materialLaw"),
-                # 材料核查标准
-                "material_check_standard": deal_material_check_standard(material.get("unid")),
-                # 附件下载
-                # 格式文本
-                "materialFormguid": download_file(material.get("materialFormguid")) if material.get("materialFormguid") else None,
-                # 示范文本
-                "materialExampleguid": download_file(material.get("materialExampleguid")) if material.get("materialExampleguid") else None
-            })
+    # 递归处理children 获取application_materials
+    get_application_materials(materialCheckList,application_materials)
 
     # -------------------------------
     # 返回统一结构
@@ -232,3 +196,85 @@ def cleaned_imgfile(imgfile):
 
     cleaned_imgfile = [item for item in imgfile if isinstance(item, dict) and item.get("fileName") and item.get("fileUnid")]
     return cleaned_imgfile
+
+
+# 申报材料——中发现重复，进行去重处理
+def material_check_list(directoryList):
+    materialCheckList = []
+    seen_unids = set()  # 用于记录已添加的 material unid
+
+    for directory in directoryList:
+        # 判断是否为首次申请
+        materialClass = directory.get("materialClass", {})
+        situationTitle = 0 if materialClass.get("situationTitle") == "首次申请" else 1
+
+        # 抽取申报材料信息(返回结果为列表形式)
+        materialList = directory.get("material") or []
+        # 下面这种是判断是否为情况2
+        if not materialList and directory.get("materialName"):
+            materialList = [directory]
+
+        for material in materialList:
+            unid = material.get("unid")
+            material['situationTitle'] = situationTitle
+
+            # 如果 unid 已存在，则跳过
+            if unid in seen_unids:
+                continue
+
+            # 否则，标记为已见过，并添加到结果列表
+            seen_unids.add(unid)
+            materialCheckList.append(material)
+
+    return materialCheckList
+
+
+# 申报材料——递归处理children
+def get_application_materials(materialList, application_materials, parent_unid=None):
+
+    for material in materialList:
+        children = material.get("children")
+        if children:
+            # 添加父节点
+            application_materials.append({
+                "unid": material.get("unid"),
+                "name": material.get("name"),
+            })
+
+            # 递归处理子节点，将当前节点的unid作为父unid传递
+            get_application_materials(children, application_materials=application_materials, parent_unid=material.get("unid"))
+
+        else:
+            application_materials.append({
+                "unid": material.get("unid"),
+                # 增加一个父节点
+                "parentUnid": parent_unid,
+                # 是否为首次申请
+                "situationTitle": material.get("situationTitle"),
+                # 文件类型
+                "materialName": material.get("materialName"),
+                # 材料形式(1-纸质，电子材料 2-电子材料 3-纸质 7-电子材料)
+                "materialOrdernum": material.get("materialOrdernum"),
+                # 材料要求(材料类型 份数)
+                # 类型
+                "materialMedium": material.get("materialMedium"),
+                # 份数
+                "materialPagenum": material.get("materialPagenum"),
+                # 材料必要性(1-必要)
+                "materialIsneed": material.get("materialIsneed"),
+                # 来源渠道
+                "materialSourcechannelName": material.get("materialSourcechannelName"),
+                # 具体要求
+                "materialPageformat": material.get("materialPageformat"),
+                # 设立依据
+                "materialLaw": material.get("materialLaw"),
+                # 材料核查标准
+                "material_check_standard": deal_material_check_standard(material.get("unid")),
+                # 附件下载
+                # 格式文本
+                "materialFormguid": download_file(material.get("materialFormguid")) if material.get(
+                    "materialFormguid") else None,
+                # 示范文本
+                "materialExampleguid": download_file(material.get("materialExampleguid")) if material.get(
+                    "materialExampleguid") else None
+            })
