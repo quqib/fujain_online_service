@@ -27,13 +27,13 @@ class ServiceMaterialVerificationInfo(Base):
     )
 
     # 本身节点
-    problem_unid = Column(String(36), nullable=True, index=True, comment='本身节点')
+    problem_unid = Column(String(36), nullable=True, comment='本身节点')
 
     # 父级节点
-    parent_problem_unid = Column(String(36), nullable=True, index=True, comment='父级节点')
+    parent_problem_unid = Column(String(36), nullable=True, comment='父级节点')
 
     # 本身字段
-    problem_name = Column(String(2000), nullable=True, index=True, comment='本身字段')
+    problem_name = Column(String(2000), nullable=True, comment='本身字段')
 
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建时间')

@@ -5,6 +5,7 @@ from sprider.second_page_sprider import fetch_all_unids
 from sprider.get_middle_unid import get_middle_unid
 from sprider.unid_page_sprider import get_message
 from storage.storage_message import save_all
+from sprider.service_unid_page_sprider import service_get_message
 from storage.service_storage_message import save_service_all
 from storage.db import init_db
 
@@ -13,6 +14,7 @@ def main():
     # 获取所有的unid
     unid_list = fetch_all_unids()
 
+    # unid_list = ["E9D22FD97F359D97144DC46A160EA7A5"]
     # 池大小（可按需调整）
     producer_workers = 10  # 用于处理 unid（第一阶段）
     consumer_workers = 6   # 用于处理 service_unid（第二阶段）
@@ -65,7 +67,8 @@ def main():
             unid, service_unid = item
             try:
                 # 这里 save_service_all 应该是根据 service_unid 获取并保存三层数据
-                save_service_all(service_unid)
+                parsed_service = service_get_message(service_unid, unid)
+                save_service_all(parsed_service)
                 print(f"{unid}（三层）{service_unid} 保存成功")
             except Exception as e:
                 print(f"{unid}（三层）{service_unid} 处理失败：", e)

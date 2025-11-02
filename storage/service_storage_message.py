@@ -72,24 +72,20 @@ def save_service_all(parsed: dict):
             contact_phone=service_basic.get("contactphone"),
             # 监督投诉电话
             supervision_phone=service_basic.get("monitorcomplain"),
-
-            # 特殊环节
-            special_links=service_basic.get("specialList"),
             # 一件事集成套餐(这个是一个链接)
-
-            # 市场准入负面清单许可准入措施
-            market_access_measures=service_basic.get("marketAccessList"),
             # 中介服务
             intermediary_services=service_basic.get("intermediaryServicesList"),
-            # 权责清单
-            responsibility_list=service_basic.get("liabilityName"),
 
             # 审批结果名称
             approval_result_name=service_basic.get("resultName"),
             # 审批结果类型
             approval_result_type=service_basic.get("finishTypeName"),
             # 审批结果样本
-            approval_result_sample=service_basic.get("resultFile"),
+            approval_result_sample=service_basic.get("resultFileType"),
+            # 审批结果样本名称
+            approval_result_sample_name=service_basic.get("resultFileName"),
+            # 审批结果样本类型
+            approval_result_sample_type=service_basic.get("resultFileType"),
             # 审批结果共享
             approval_result_share=service_basic.get("finishType"),
             # 结果领取方式
@@ -174,9 +170,10 @@ def save_service_all(parsed: dict):
 
             # 项目链接
             dir_link=service_basic.get("dirLink"),
+
         )
         session.add(service_basic_obj)
-        session.flush()
+        session.commit()
 
         # 存储特殊环节-使用for循环写入
         service_section_list = parsed.get("service_section_list", [])
@@ -275,6 +272,8 @@ def save_service_all(parsed: dict):
                     basic_info_rowguid=service_basic.get("unid"),
                     # 申报材料unid
                     material_unid=service_application_material.get("unid"),
+                    # 父节点
+                    parent_unid=service_application_material.get("parentUnid"),
                     # 文件类型
                     file_type=service_application_material.get("materialName"),
                     # 材料形式(1-纸质，电子材料 3-纸质 7-电子材料)
@@ -294,8 +293,12 @@ def save_service_all(parsed: dict):
                     # 附件下载
                     # 格式文本
                     material_formguid=service_application_material.get("materialFormguid"),
+                    # 格式文本名称
+                    material_formguid_name=service_application_material.get("materialFormguidName"),
                     # 示范文本
                     material_exampleguid=service_application_material.get("materialExampleguid"),
+                    # 示范文本名称
+                    material_exampleguid_name=service_application_material.get("materialExampleguidName"),
                     # 首次申请（是否为首次申请）
                     first_application=service_application_material.get("situationTitle"),
                 )
@@ -382,7 +385,7 @@ def save_service_all(parsed: dict):
                 # 外键
                 basic_info_rowguid=service_basic.get("unid"),
                 # 办理依据
-                basis_handling=service_apply.get("according"),
+                basis_handling=service_handling.get("according"),
             )
             session.add(service_handling_obj)
 

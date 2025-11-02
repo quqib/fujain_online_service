@@ -99,9 +99,11 @@ def get_message(unid):
     # -------------------------------
     # 4.获取申报材料-此处需要存储父子结构
     # -------------------------------
+    params_materials = parameter["applicationMaterials"].copy()
+    params_materials["unid"] = unid
     res_materials = requests.get(
         url=urlConfig.get("applicationMaterialsUrl"),
-        params=params,
+        params=params_materials,
         headers=headers,
         timeout=30
     )
@@ -132,7 +134,7 @@ def get_message(unid):
         "application_materials": application_materials
     }
 
-
+# 材料核查标准
 def deal_material_check_standard(id):
     rpName = ""
     params = parameter["materialCheckStandard"].copy()
@@ -274,7 +276,11 @@ def get_application_materials(materialList, application_materials, parent_unid=N
                 # 格式文本
                 "materialFormguid": download_file(material.get("materialFormguid")) if material.get(
                     "materialFormguid") else None,
+                # 格式文本名称
+                "materialFormguName": material.get("materialFormguName"),
                 # 示范文本
                 "materialExampleguid": download_file(material.get("materialExampleguid")) if material.get(
-                    "materialExampleguid") else None
+                    "materialExampleguid") else None,
+                # 示范文本名称
+                "materialExampleguName": material.get("materialExampleguName"),
             })

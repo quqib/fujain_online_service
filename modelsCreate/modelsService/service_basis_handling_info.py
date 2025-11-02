@@ -27,7 +27,7 @@ class ServiceBasisHandlingInfo(Base):
     )
 
     # 办理依据
-    basis_handling = Column(Text, nullable=True, index=True, comment='办理依据')
+    basis_handling = Column(Text, nullable=True, comment='办理依据')
 
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建时间')

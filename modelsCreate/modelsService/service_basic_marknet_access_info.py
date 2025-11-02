@@ -26,7 +26,7 @@ class ServiceBasicMarknetAccessInfo(Base):
         comment='关联 service_basic_information_info 表的主键'
     )
     # 负面清单表名 进入页面前拿到的那个名称
-    market_name = Column(String(200), nullable=True, comment='负面清单表名')
+    market_name = Column(String(255), nullable=True, comment='负面清单表名')
 
     # ================== 基础信息 ==================
     # 负面清单版本（在用）
@@ -36,10 +36,10 @@ class ServiceBasicMarknetAccessInfo(Base):
     market_negativate_status = Column(String(50), nullable=True, comment='负面清单事项状态')
 
     # 负面清单类别（许可准入类）
-    market_negativate_type = Column(String(100), nullable=True, comment='负面清单类别')
+    market_negativate_type = Column(String(255), nullable=True, comment='负面清单类别')
 
     # 行业（如“制造业”、“金融业”、“信息技术服务业”）
-    market_negativate_industry = Column(String(100), nullable=True, comment='行业')
+    market_negativate_industry = Column(String(255), nullable=True, comment='行业')
 
     # 负面清单事项名称（如“禁止投资烟草制品生产”）
     market_negativate_name = Column(String(500), nullable=True, comment='负面清单事项名称')
@@ -67,7 +67,7 @@ class ServiceBasicMarknetAccessInfo(Base):
     market_negativate_measure_version = Column(String(50), nullable=True, comment='负面清单事项措施版本')
 
     # 是否暂时列入清单（如“是”、“否”, -）
-    is_temporarily_included = Column(String(2), nullable=True, comment='是否暂时列入清单')  # 可用 '1'=是, '0'=否
+    is_temporarily_included = Column(String(50), nullable=True, comment='是否暂时列入清单')  # 可用 '1'=是, '0'=否
 
     # 计划生效日期
     planned_effective_date = Column(DateTime, nullable=True, comment='计划生效日期')
@@ -75,9 +75,10 @@ class ServiceBasicMarknetAccessInfo(Base):
     # 计划取消日期
     planned_cancel_date = Column(DateTime, nullable=True, comment='计划取消日期')
 
+
     # ================== 措施关联匹配 ==================
     # 关联的政务服务事项基本目录（可关联多个，此处存储编码或名称 名称之间使用!@#进行隔开）
-    associated_service_item = Column(Text, nullable=True, index=True, comment='政务服务事项基本目录')
+    associated_service_item = Column(Text, nullable=True, comment='政务服务事项基本目录')
 
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建时间')

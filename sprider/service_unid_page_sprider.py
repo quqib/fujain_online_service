@@ -6,18 +6,19 @@
 """
 import random
 import time
-
 import requests
+import base64
+import zlib  # 或 gzip，这里推荐 zlib (DEFLATE)
 from config.seetings import headers, urlConfig, parameter
 
 
-def service_get_message(unid):
+def service_get_message(unid, main_unid):
 
     # 获取页面相关的附件用于后续附件的检索
     data_attachment_information = get_attachment_information(unid)
 
     # -------------------------------
-    # 1️.业务办理-获取基础信息
+    # 1️.业务办理-基础信息
     # -------------------------------
     params_basic = parameter["serviceUnidPage"].copy()
     params_basic["unid"] = unid
@@ -29,160 +30,158 @@ def service_get_message(unid):
         timeout=30
     )
     data_basic = res_basic.json().get("data", {})
-    apasDirectory = data_basic.get("apasDirectory", {})
+    apasService = data_basic.get("apasService", {})
     rspApasServiceExtend = data_basic.get("rspApasServiceExtend", {})
     service_basic = {
-        "unid": apasDirectory.get("unid"),
+        "unid": apasService.get("unid"),
         # 用于外键
-        "basic_info_rowguid": unid,
+        "basic_info_rowguid": main_unid,
         # 事项编码
-        "infoprojid": apasDirectory.get("infoprojid"),
+        "infoprojid": apasService.get("infoprojid"),
         # 基本编码
-        "baseCode": apasDirectory.get("baseCode"),
+        "baseCode": apasService.get("baseCode"),
         # 实施编码
-        "implCode": apasDirectory.get("implCode"),
+        "implCode": apasService.get("implCode"),
         # 业务办理项编码
-        "taskHandleItem": apasDirectory.get("taskHandleItem"),
+        "taskHandleItem": apasService.get("taskHandleItem"),
 
         # 办件类型()
-        "servicetype": apasDirectory.get("servicetype"),
+        "servicetype": apasService.get("servicetype"),
         # 事项类型
-        "addTypeName": apasDirectory.get("addTypeName"),
+        "addTypeName": apasService.get("addTypeName"),
         # 行使层级
-        "performLevelName": apasDirectory.get("performLevelName"),
+        "performLevelName": apasService.get("performLevelName"),
         # 法定时限
-        "lawlimit": apasDirectory.get("lawlimit"),
+        "lawlimit": apasService.get("lawlimit"),
         # 承诺时限
-        "promiseday": apasDirectory.get("promiseday"),
+        "promiseday": apasService.get("promiseday"),
         # 实施主体
-        "deptname": apasDirectory.get("deptname"),
+        "deptname": apasService.get("deptname"),
         # 承诺时限说明
-        "promisdayinfo": apasDirectory.get("promisdayinfo"),
+        "promisdayinfo": apasService.get("promisdayinfo"),
 
 
         # 实施主体性质
-        "deptPropertyName": apasDirectory.get("deptPropertyName"),
+        "deptPropertyName": apasService.get("deptPropertyName"),
         # 委托部门
-        "deptEntrust": apasDirectory.get("deptEntrust"),
+        "deptEntrust": apasService.get("deptEntrust"),
         # 联办机构 当servicetype为联办件的时候才会显示
-        "coopOrg": apasDirectory.get("coopOrg"),
+        "coopOrg": apasService.get("coopOrg"),
         # 主办处室
-        "leadDept": apasDirectory.get("leadDept"),
+        "leadDept": apasService.get("leadDept"),
 
         # 权力来源
-        "rightSourceName": apasDirectory.get("rightSourceName"),
+        "rightSourceName": apasService.get("rightSourceName"),
         # 联系电话
-        "contactphone": apasDirectory.get("contactphone"),
+        "contactphone": apasService.get("contactphone"),
         # 监督投诉电话
-        "monitorcomplain": apasDirectory.get("monitorcomplain"),
-
-
-        # 一件事集成套餐
-        # "dirName": apasDirectory.get("dirName"),
-
-        # 市场准入负面清单许可准入措施(这里返回的也是一个列表，需要处理unid name表数据写入)
-        "marketAccessList": apasDirectory.get("marketAccessList"),
+        "monitorcomplain": apasService.get("monitorcomplain"),
 
         # 中介服务 注意这个是个列表
-        "intermediaryServicesList": apasDirectory.get("intermediaryServicesList"),
+        "intermediaryServicesList": apasService.get("intermediaryServicesList")[0].get("name") if apasService.get("intermediaryServicesList") else None,
         # 权责清单
-        "liabilityName": apasDirectory.get("liabilityName"), # 权责清单名称
+        "liabilityName": apasService.get("liabilityName"), # 权责清单名称
 
         # 审批结果名称
-        "resultName": apasDirectory.get("resultName"),
+        "resultName": apasService.get("resultName"),
         # 审批结果类型
-        "finishTypeName": apasDirectory.get("finishTypeName"),
+        "finishTypeName": apasService.get("finishTypeName"),
         # 审批结果样本 (一个用于下载的字典)
-        "resultFile": apasDirectory.get("resultFile"),
+        "resultFile": download_file(apasService.get("resultFile").get("fileUnid")) if apasService.get("resultFile") else None,
+        # 审批结果样本名称
+        "resultFileName": apasService.get("resultFile").get("fileName") if apasService.get("resultFile") else None,
+        # 审批结果样本类型
+        "resultFileType": apasService.get("resultFile").get("fileExt") if apasService.get("resultFile") else None,
         # 审批结果共享(有值是 无值否)
-        "finishType": apasDirectory.get("finishType"),
+        "finishType": apasService.get("finishType"),
         # 结果领取方式
-        "finishGetTypeName": apasDirectory.get("finishGetTypeName"),
+        "finishGetTypeName": apasService.get("finishGetTypeName"),
         # 结果领取说明
-        "finishInfo": apasDirectory.get("finishInfo"),
+        "finishInfo": apasService.get("finishInfo"),
 
         # 申报对象
-        "userType": apasDirectory.get("userType"),
+        "userType": apasService.get("userType"),
 
         # 是否进驻政务大厅 0否 1是
-        "enterif": apasDirectory.get("enterif"),
+        "enterif": apasService.get("enterif"),
         # 办理形式
-        "handleForm": apasDirectory.get("handleForm"),
+        "handleForm": apasService.get("handleForm"),
         # 必须现场办理原因
-        "sceneReason": apasDirectory.get("sceneReason"),
+        "sceneReason": apasService.get("sceneReason"),
 
         # 个人办事主题
-        "gerenTheme": apasDirectory.get("gerenTheme"),
+        "gerenTheme": apasService.get("gerenTheme"),
         # 企业办事主题
-        "qiyeTheme": apasDirectory.get("qiyeTheme"),
+        "qiyeTheme": apasService.get("qiyeTheme"),
         # 网上办理深度
-        "webApplyDegreeName": apasDirectory.get("webApplyDegreeName"),
+        "webApplyDegreeName": apasService.get("webApplyDegreeName"),
 
         # 通办范围
-        "nearbyAreaName": apasDirectory.get("nearbyAreaName"),
+        "nearbyAreaName": apasService.get("nearbyAreaName"),
         # 数量限制
-        "countLimit": apasDirectory.get("countLimit"),
+        "countLimit": apasService.get("countLimit"),
         # 通办范围说明
-        "nearbyInstruction": apasDirectory.get("nearbyInstruction"),
+        "nearbyInstruction": apasService.get("nearbyInstruction"),
 
         # 是否全国高频“跨省通办”事项
-        "highFrequencyKstb": apasDirectory.get("highFrequencyKstb"),
+        "highFrequencyKstb": apasService.get("highFrequencyKstb"),
+        # 跨省通办模式是通过一个字段的提取
         # 跨省通办模式说明
         "kstbModel": rspApasServiceExtend.get("kstbModel"),
         # 跨省代收代办区域
-        "kstbOutAreaname": apasDirectory.get("kstbOutAreaname"),
+        "kstbOutAreaname": apasService.get("kstbOutAreaname"),
 
         # 计划生效日期
-        "planEnableDate": apasDirectory.get("planEnableDate"),
+        "planEnableDate": apasService.get("planEnableDate"),
         # 计划取消日期
-        "planCancelDate": apasDirectory.get("planCancelDate"),
+        "planCancelDate": apasService.get("planCancelDate"),
 
         # 是否开通预约服务
-        "isSubscribeService": apasDirectory.get("isSubscribeService"),
+        "isSubscribeService": apasService.get("isSubscribeService"),
         # 是否支持自助终端办理
-        "terminalSupport": apasDirectory.get("terminalSupport"),
+        "terminalSupport": apasService.get("terminalSupport"),
         # 面向自然人地方特色主题分类
-        "personalThemeCategory": apasDirectory.get("personalThemeCategory"),
+        "personalThemeCategory": apasService.get("personalThemeCategory"),
         # 面向法人地方特色主题分类
-        "companyThemeCategory": apasDirectory.get("companyThemeCategory"),
+        "companyThemeCategory": apasService.get("companyThemeCategory"),
 
         # 移动端是否对接单点登录
-        "mobileSingleLogin": apasDirectory.get("mobileSingleLogin"),
+        "mobileSingleLogin": apasService.get("mobileSingleLogin"),
         # 计算机端是否对接单点登录
-        "pcSingleLogin": apasDirectory.get("pcSingleLogin"),
+        "pcSingleLogin": apasService.get("pcSingleLogin"),
 
         # 乡镇街道名称
-        "smallTownsName": apasDirectory.get("smallTownsName"),
+        "smallTownsName": apasService.get("smallTownsName"),
         # 乡镇街道代码
-        "smallTownsCode": apasDirectory.get("smallTownsCode"),
+        "smallTownsCode": apasService.get("smallTownsCode"),
         # 村镇社区名称
-        "communityName": apasDirectory.get("communityName"),
+        "communityName": apasService.get("communityName"),
         # 村镇社区代码
-        "communityCode": apasDirectory.get("communityCode"),
+        "communityCode": apasService.get("communityCode"),
 
         # 是否支持物流快递
-        "logisticsExpress": apasDirectory.get("logisticsExpress"),
+        "logisticsExpress": apasService.get("logisticsExpress"),
         # 是否支持网上支付
-        "onlinePay": apasDirectory.get("onlinePay"),
+        "onlinePay": apasService.get("onlinePay"),
 
         # 事项状态
-        "state": apasDirectory.get("state"),
+        "state": apasService.get("state"),
         # 是否全程代办 N代表否 Y代表是
-        "agentFlag": apasDirectory.get("agentFlag"),
+        "agentFlag": apasService.get("agentFlag"),
 
         # 备注
-        "iremark": apasDirectory.get("iremark"),
+        "iremark": apasService.get("iremark"),
         # 是否收费
-        "chargeLimit": apasDirectory.get("chargeLimit"),
+        "chargeLimit": apasService.get("chargeLimit"),
 
         # 链接
-        "dirLink": f"https://zwfw.fujian.gov.cn/standartCatalogGuide?unid={apasDirectory.get('unid')}"
+        "dirLink": f"https://zwfw.fujian.gov.cn/standartCatalogGuide?unid={apasService.get('unid')}"
     }
 
     # -------------------------------
-    # 2.业务办理-特殊环节
+    # 2.业务办理-基础信息-特殊环节
     # -------------------------------
-    specialList = apasDirectory.get("specialList")
+    specialList = apasService.get("specialList")
     service_section_list = []
 
     for special in specialList:
@@ -198,11 +197,11 @@ def service_get_message(unid):
         })
 
     # -------------------------------
-    # 2.业务办理-市场准入负面清单许可准入措施
+    # 3.业务办理-基础信息-市场准入负面清单许可准入措施
     # -------------------------------
     service_market_access = []
 
-    marketAccessList = apasDirectory.get("marketAccessList")
+    marketAccessList = apasService.get("marketAccessList")
     for marketAccess in marketAccessList:
         params_market_access = parameter["marketAccess"].copy()
         params_market_access["id"] = marketAccess.get("unid")
@@ -223,9 +222,9 @@ def service_get_message(unid):
         measureMatching = "!@#".join([catalogVo.get("dirName") for catalogVo in catalogVos])
         service_market_access.append({
             # 名称
-            "name": marketAccess.get("unid"),
+            "name": marketAccess.get("name"),
             # 基础信息
-            # 负面清单事项版本
+            # 负面清单事项版本（与状态相同）
             "negativeList_status": negativeList.get("status"),
             # 负面清单类别
             "negativeList_itemType": negativeList.get("itemType"),
@@ -262,10 +261,10 @@ def service_get_message(unid):
 
 
     # -------------------------------
-    # 3.业务办理-权责清单
+    # 4.业务办理-基础信息-权责清单
     # -------------------------------
     params_responsibity_author = parameter["responsibilityAuthorities"].copy()
-    params_responsibity_author["powerunid"] = unid
+    params_responsibity_author["powerunid"] = apasService.get("powerunid")
 
     res_responsibity_author= requests.get(
         url=urlConfig.get("responsibilityAuthoritiesUrl"),
@@ -296,7 +295,7 @@ def service_get_message(unid):
 
 
     # -------------------------------
-    # 4.业务办理-受理条件 窗口办理
+    # 5.业务办理-受理条件 窗口办理
     # -------------------------------
     applyMethod = data_basic.get("applyMethod", {})
     service_apply = {
@@ -311,7 +310,7 @@ def service_get_message(unid):
     }
 
     # -------------------------------
-    # 3.业务办理-申请材料
+    # 6.业务办理-申请材料 申请材料核查
     # -------------------------------
     params_materials = parameter["sriviceApplicationMaterials"].copy()
     params_materials["unid"] = unid
@@ -339,13 +338,14 @@ def service_get_message(unid):
 
     # 递归处理children 获取application_materials
     get_application_materials(materialCheckList,
+                              unid,
                               service_application_materials,
                               service_material_verifications,
                               data_attachment_information)
 
 
     # -------------------------------
-    # 5.业务办理-办理流程
+    # 7.业务办理-办理流程
     # -------------------------------
     params_processing_procedure = parameter["processingProcedure"].copy()
     params_processing_procedure["serviceId"] = unid
@@ -377,7 +377,7 @@ def service_get_message(unid):
 
 
     # -------------------------------
-    # 6.业务办理-网上办理
+    # 8.业务办理-网上办理
     # -------------------------------
     params_online = parameter["onlineUnidPage"].copy()
     params_online["unid"] = unid
@@ -407,15 +407,15 @@ def service_get_message(unid):
 
 
     # -------------------------------
-    # 7.业务办理-办理依据
+    # 9.业务办理-办理依据
     # -------------------------------
     service_handling = {
-        "according": data_basic.get("data_basic")
+        "according": data_basic.get("according")
     }
 
 
     # -------------------------------
-    # 8.业务办理-常见问题
+    # 10.业务办理-常见问题
     # -------------------------------
     params_asked_questions = parameter["frequentlyAskedQuestions"].copy()
     params_asked_questions["unid"] = unid
@@ -470,29 +470,10 @@ def service_get_message(unid):
 # service_get_message(unid="F8B0582A365552FB9247B678A952D7AF")
 
 
-
-def deal_material_check_standard(id):
-    rpName = ""
-    params = parameter["materialCheckStandard"].copy()
-    params["materialUnid"] = id
-    res = requests.get(
-        url=urlConfig.get("materialCheckStandardUrl"),
-        params=params,
-        headers=headers,
-        timeout=30
-    )
-    resJson = res.json()
-    datas = resJson.get("data", {})
-    if datas:
-        for data in datas:
-            rpName += data.get("rpName") if data.get("rpName") else ""
-
-    return rpName
-
 # 获取所有的附件信息
-def get_attachment_information(id):
+def get_attachment_information(unid):
     params_attachment_information = parameter["getAttachmentInformation"].copy()
-    params_attachment_information["serviceId"] = "F8B0582A365552FB9247B678A952D7AF"
+    params_attachment_information["serviceId"] = unid
     res_attachment_information = requests.get(
         url=urlConfig.get("getAttachmentInformationUrl"),
         params=params_attachment_information,
@@ -507,7 +488,10 @@ def get_attachment_information(id):
 def get_check_attachment(data_list, target_punid, type):
     # type 1样表 2空表
     return [
-            item.get("fileunid")
+        {
+            "fileunid": item.get("fileunid"),
+            "name": item.get("name")
+        }
         for item in data_list
         if item.get("punid") == target_punid and int(item.get("type")) == type
     ]
@@ -518,6 +502,7 @@ def download_file(id):
     params = parameter["downloadAttachment"].copy()
     params["unid"] = id
     time.sleep(random.randint(1, 3))
+
     res = requests.get(
         url=urlConfig.get("downloadAttachmentUrl"),
         params=params,
@@ -526,12 +511,18 @@ def download_file(id):
     )
     resJson = res.json()
     file_url = resJson.get("data")
-    #下载文件内容（以二进制形式）
-    file_response = requests.get(file_url, headers=headers, timeout=30)
-    # 获取二进制内容
-    binary_content = file_response.content
 
-    return binary_content
+    # 下载文件内容（二进制）
+    file_response = requests.get(file_url, headers=headers, timeout=30)
+    binary_content = file_response.content  # bytes
+
+    # ✅ 第一步：使用 zlib 压缩（可选 level=6 平衡速度和压缩率）
+    compressed_data = zlib.compress(binary_content, level=6)  # bytes
+
+    # ✅ 第二步：Base64 编码为字符串
+    base64_str = base64.b64encode(compressed_data).decode('utf-8')  # str
+
+    return base64_str
 
 # 处理图片信息
 def deal_basic_picture(imgfile, wordfile):
@@ -587,7 +578,7 @@ def get_message_children(data, all_node):
     problemName = data.get("problemName")
 
     # 材料标识
-    materialUnid = data.get("materialUnid")
+    materialUnid = data.get("materialUnid") if data.get("materialUnid") else data.get("problemUnid")
 
     for childProblem in childProblems:
         get_message_children(childProblem, all_node=all_node)
@@ -636,6 +627,7 @@ def material_check_list(directoryList):
 
 # 申报材料——递归处理children
 def get_application_materials(materialList,
+                              itemUnid,
                               application_materials,
                               all_data,
                               data_attachment_information,
@@ -652,6 +644,7 @@ def get_application_materials(materialList,
 
             # 递归处理子节点，将当前节点的unid作为父unid传递
             get_application_materials(children,
+                                      itemUnid=itemUnid,
                                       application_materials=application_materials,
                                       all_data=all_data,
                                       data_attachment_information=data_attachment_information,
@@ -660,11 +653,19 @@ def get_application_materials(materialList,
 
         else:
             # 请求链接获取材料核查标准信息
-            data_material_erification = res_message_children("F8B0582A365552FB9247B678A952D7AF",
+            data_material_erification = res_message_children(itemUnid,
                                                              material.get("name"),
                                                              material.get("unid"))
             # 解析核查标准信息
             get_message_children(data_material_erification, all_data)
+
+            # 格式文本处理
+            attachment = get_check_attachment(data_attachment_information, material.get("unid"), type=2)
+            file_info = attachment[0] if attachment else None
+
+            # 示范文本处理
+            example_attachment = get_check_attachment(data_attachment_information, material.get("unid"), type=1)
+            example_info = example_attachment[0] if example_attachment else None
 
             application_materials.append({
                 "unid": material.get("unid"),
@@ -692,13 +693,13 @@ def get_application_materials(materialList,
                 # 材料核查单独存表
                 # 附件下载
                 # 格式文本
-                "materialFormguid": download_file(
-                    get_check_attachment(data_attachment_information, material.get("unid"), type=2
-                                         )[0]),
+                "materialFormguid": download_file(file_info.get("fileunid")) if file_info else None,
+                # 格式文本名称
+                "materialFormguidName": file_info.get("name") if file_info else None,
                 # 示范文本
-                "materialExampleguid": download_file(
-                    get_check_attachment(data_attachment_information, material.get("unid"), type=1
-                                         )[0])
+                "materialExampleguid": download_file(example_info.get("fileunid")) if example_info else None,
+                # 示范文本名称
+                "materialExampleguidName": example_info.get("name") if example_info else None,
             })
 
 

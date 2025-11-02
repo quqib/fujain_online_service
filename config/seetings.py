@@ -1,4 +1,17 @@
-# 数据库连接配置
+from utils.util import get_time_code
+
+# 数据库连接配置 本地测试连接
+# DB_CONFIG = {
+#     'host': '172.16.30.106',
+#     'port': 3306,
+#     'user': 'root',
+#     'password': 'root123',
+#     'database': 'online_service_create_t',
+#     'charset': 'utf8mb4'
+# }
+
+
+# 本地存储连接
 # DB_CONFIG = {
 #     'host': '172.16.30.106',
 #     'port': 3306,
@@ -8,23 +21,27 @@
 #     'charset': 'utf8mb4'
 # }
 
-DB_CONFIG = {
-    'host': 'localhost',
-    'port': 3306,
-    'user': 'root',
-    'password': 'root123',
-    'database': 'online_service_create',
-    'charset': 'utf8mb4'
-}
 
+# 个人连接
 # DB_CONFIG = {
-#     'host': '192.168.10.110',
+#     'host': 'localhost',
 #     'port': 3306,
 #     'user': 'root',
 #     'password': 'root123',
-#     'database': 'online_service',
+#     'database': 'online_service_create',
 #     'charset': 'utf8mb4'
 # }
+
+
+# 公司数据存储服务器连接
+DB_CONFIG = {
+    'host': '192.168.3.9',
+    'port': 3306,
+    'user': 'root',
+    'password': 'Zy20250901!',
+    'database': 'online_service_remote',
+    'charset': 'utf8mb4'
+}
 
 
 # 构建数据库 URL
@@ -55,7 +72,7 @@ urlConfig = {
     # 链接获取信息(基本信息 特殊环节 设立依据) GET
     "basicInformationUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasDirectory/getDireBasicInfo",
     # 链接获取信息(申报材料) GET
-    "applicationMaterialsUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasDirectory/getDirMaterialLis",
+    "applicationMaterialsUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasDirectory/getDirMaterialList",
     # 下载附件链接 GET
     "downloadAttachmentUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/file/downloadFile",
     # 处理核查标准
@@ -156,7 +173,7 @@ parameter = {
     "responsibilityAuthorities": {
         "powerunid": "",
         "type": 1,
-        "authId": ""
+        "authId": get_time_code()
     },
     # 一件事集成套餐
     "OneThingPackage": {

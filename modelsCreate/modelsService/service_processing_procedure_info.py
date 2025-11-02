@@ -27,13 +27,13 @@ class ServiceProcessingProcedureInfo(Base):
     )
 
     # 办理流程
-    procedure_name = Column(String(50), nullable=True, comment='办理流程')
+    procedure_name = Column(String(255), nullable=True, comment='办理流程')
 
     # 步骤类型
     step_type = Column(String(500), nullable=True, comment='步骤类型')
 
     # 办理人 / 岗位（可以是角色或具体人员）
-    handler = Column(String(500), nullable=True, comment='办理人')
+    handler = Column(String(255), nullable=True, comment='办理人')
 
     # 办理时限（如“1工作日”、“即时办结”等描述性内容）
     handling_time_limit = Column(String(50), nullable=True, comment='办理时限')

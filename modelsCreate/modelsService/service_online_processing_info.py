@@ -29,13 +29,13 @@ class ServiceOnlineProcessingInfo(Base):
     does_it_involve = Column(String(2), nullable=True, comment='是否涉及')
 
     # 网上申请方式（如“政务服务网”、“闽政通APP”、“部门自建系统”等）
-    online_application_method = Column(String(200), nullable=True, comment='网上申请方式')
+    online_application_method = Column(String(500), nullable=True, comment='网上申请方式')
 
     # 账户要求（如“需实名认证”、“需L3级账户”等）
-    account_requirements = Column(String(200), nullable=True, comment='账户要求')
+    account_requirements = Column(String(500), nullable=True, comment='账户要求')
 
     # 承诺到窗口最多次数说明（如“全程网办，最多跑0次”或“材料预审后现场核验，最多跑1次”）
-    max_visit_commitment = Column(String(200), nullable=True, comment='承诺到窗口最多次数说明')
+    max_visit_commitment = Column(String(500), nullable=True, comment='承诺到窗口最多次数说明')
 
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建时间')

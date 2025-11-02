@@ -27,10 +27,10 @@ class ServiceAskedQuestionInfo(Base):
     )
 
     # 问题名称
-    question_name = Column(Text, nullable=True, index=True, comment='问题名称')
+    question_name = Column(Text, nullable=True, comment='问题名称')
 
     # 问题内容
-    question_content = Column(Text, nullable=True, index=True, comment='问题内容')
+    question_content = Column(Text, nullable=True, comment='问题内容')
 
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建时间')

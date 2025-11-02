@@ -3,7 +3,7 @@
 """
 import uuid
 from sqlalchemy import Column, String, Text, DateTime, CHAR, ForeignKey, func
-from sqlalchemy.dialects.mysql import LONGBLOB
+from sqlalchemy.dialects.mysql import LONGTEXT
 from modelsCreate.base import Base
 
 class ServiceApplicationMaterialInfo(Base):
@@ -26,7 +26,10 @@ class ServiceApplicationMaterialInfo(Base):
         comment='关联 service_basic_information_info 表的主键'
     )
     # 申报材料unid
-    material_unid = Column(String(36), nullable=True, comment='文件类型')
+    material_unid = Column(String(36), nullable=True, unique=True, comment='申报材料unid')
+
+    # 父节点
+    parent_unid = Column(String(36), nullable=True, comment='父级节点')
 
     # 文件类型
     file_type = Column(String(100), nullable=True, comment='文件类型')
@@ -44,7 +47,7 @@ class ServiceApplicationMaterialInfo(Base):
     material_necessity = Column(String(2), nullable=True, comment='材料必要性')
 
     # 来源渠道
-    source_channel = Column(String(100), nullable=True, comment='来源渠道')
+    source_channel = Column(String(255), nullable=True, comment='来源渠道')
 
     # 设立依据
     basis_of_establishment = Column(Text, nullable=True, comment='设立依据')
@@ -56,8 +59,10 @@ class ServiceApplicationMaterialInfo(Base):
     first_application = Column(String(2), nullable=True, comment='首次申请')
 
     # 附件下载（存储文件二进制或路径 格式文本 示范文本）
-    material_formguid = Column(LONGBLOB, nullable=True, comment='附件下载格式文本')
-    material_exampleguid = Column(LONGBLOB, nullable=True, comment='附件下载示范文本')
+    material_formguid = Column(LONGTEXT, nullable=True, comment='附件下载格式文本')
+    material_formguid_name = Column(String(255), nullable=True, comment='附件下载格式文本名称')
+    material_exampleguid = Column(LONGTEXT, nullable=True, comment='附件下载示范文本')
+    material_exampleguid_name = Column(String(255), nullable=True, comment='附件下载示范文本名称')
 
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建日期')

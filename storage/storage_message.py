@@ -45,7 +45,7 @@ def save_all(parsed: dict):
             dir_link=basic.get("dirLink"),
         )
         session.add(basic_obj)
-        session.flush()
+        session.commit()
 
         # 存储二进制图片 二进制docx文件
         basic_picture = parsed.get("basic_picture", {})
@@ -99,6 +99,10 @@ def save_all(parsed: dict):
                     basic_info_rowguid=basic.get("unid"),
                     # 文件类型
                     file_type=application_material.get("materialName"),
+                    # 材料本身unid
+                    material_unid = application_material.get("unid"),
+                    # 父节点
+                    parent_unid=application_material.get("parentUnid"),
                     # 材料形式(1-纸质，电子材料 3-纸质 7-电子材料)
                     material_form=application_material.get("materialOrdernum"),
                     # 材料要求
@@ -118,8 +122,13 @@ def save_all(parsed: dict):
                     # 附件下载
                     # 格式文本
                     material_formguid=application_material.get("materialFormguid"),
+                    # 名称
+                    material_formguid_name=application_material.get("materialFormguName"),
                     # 示范文本
                     material_exampleguid=application_material.get("materialExampleguid"),
+                    # 名称
+                    material_exampleguid_name=application_material.get("materialExampleguName"),
+
                     # 首次申请（是否为首次申请）
                     first_application=application_material.get("situationTitle"),
                 )

@@ -29,6 +29,12 @@ class ApplicationMaterialInfo(Base):
     # 文件类型
     file_type = Column(String(100), nullable=True, comment='文件类型')
 
+    # 申报材料unid
+    material_unid = Column(String(36), nullable=True, unique=True, comment='申报材料unid')
+
+    # 父节点
+    parent_unid = Column(String(36), nullable=True, comment='父级节点')
+
     # 材料形式（纸质/电子/原件/复印件）
     material_form = Column(String(50), nullable=True, comment='材料形式')
 
@@ -54,8 +60,14 @@ class ApplicationMaterialInfo(Base):
     material_check_standard = Column(Text, nullable=True, comment='材料核查标准')
 
     # 附件下载（存储文件二进制或路径 格式文本 示范文本）
+    # 格式文本
     material_formguid = Column(LONGBLOB, nullable=True, comment='附件下载格式文本')
+    # 格式文本名称
+    material_formguid_name = Column(String(255), nullable=True, comment='附件下载格式文本名称')
+    # 示范文本
     material_exampleguid = Column(LONGBLOB, nullable=True, comment='附件下载示范文本')
+    # 示范文本名称
+    material_exampleguid_name = Column(String(255), nullable=True, comment='附件下载示范文本名称')
 
     # 首次申请（是否为首次申请）'0'=是，'1'=否
     first_application = Column(String(2), nullable=True, comment='首次申请')

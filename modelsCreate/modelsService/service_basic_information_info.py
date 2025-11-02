@@ -2,7 +2,8 @@
 业务办理项清单
 """
 import uuid
-from sqlalchemy import Column, String, CHAR, DateTime, Text, Boolean, func, ForeignKey
+from sqlalchemy import Column, String, CHAR, DateTime, Text, func, ForeignKey
+from sqlalchemy.dialects.mysql import LONGTEXT
 from modelsCreate.base import Base
 
 
@@ -27,7 +28,7 @@ class ServiceBasicInformationInfo(Base):
     )
 
     # 事项编码
-    item_code = Column(String(64), nullable=True, index=True, comment='事项编码')
+    item_code = Column(String(64), nullable=True, comment='事项编码')
     # 基本编码
     basic_code = Column(String(64), nullable=True, comment='基本编码')
     # 实施编码
@@ -66,46 +67,41 @@ class ServiceBasicInformationInfo(Base):
     # 监督投诉电话
     supervision_phone = Column(String(20), nullable=True, comment='监督投诉电话')
 
-    # 特殊环节
-    special_links = Column(Text, nullable=True, comment='特殊环节')
-    # 一件事集成套餐
-    integrated_package = Column(String(255), nullable=True, comment='一件事集成套餐')
-    # 市场准入负面清单许可准入措施
-    market_access_measures = Column(Text, nullable=True, comment='市场准入负面清单许可准入措施')
     # 中介服务
     intermediary_services = Column(Text, nullable=True, comment='中介服务')
-    # 权责清单
-    responsibility_list = Column(String(255), nullable=True, comment='权责清单')
-
     # 审批结果名称
     approval_result_name = Column(String(255), nullable=True, comment='审批结果名称')
     # 审批结果类型
     approval_result_type = Column(String(64), nullable=True, comment='审批结果类型')
     # 审批结果样本
-    approval_result_sample = Column(String(255), nullable=True, comment='审批结果样本')
+    approval_result_sample = Column(LONGTEXT, nullable=True, comment='审批结果样本')
+    # 审批结果样本名称
+    approval_result_sample_name = Column(String(255), nullable=True, comment='审批结果样本名称')
+    # 审批结果样本类型
+    approval_result_sample_type = Column(String(255), nullable=True, comment='审批结果样本类型')
     # 审批结果共享
-    approval_result_share = Column(String(32), nullable=True, comment='审批结果共享')
+    approval_result_share = Column(String(50), nullable=True, comment='审批结果共享')
     # 结果领取方式
-    result_receive_method = Column(String(64), nullable=True, comment='结果领取方式')
+    result_receive_method = Column(String(255), nullable=True, comment='结果领取方式')
     # 结果领取说明
     result_receive_desc = Column(Text, nullable=True, comment='结果领取说明')
 
     # 申报对象
-    applicant_type = Column(String(64), nullable=True, comment='申报对象')
+    applicant_type = Column(String(255), nullable=True, comment='申报对象')
 
     # 是否进驻政务大厅
-    in_service_hall = Column(Boolean, nullable=True, comment='是否进驻政务大厅')
+    in_service_hall = Column(String(2), nullable=True, comment='是否进驻政务大厅')
     # 办理形式
-    handling_form = Column(String(64), nullable=True, comment='办理形式')
+    handling_form = Column(String(200), nullable=True, comment='办理形式')
     # 必须现场办理原因
     must_on_site_reason = Column(Text, nullable=True, comment='必须现场办理原因')
 
-    # 企业办事主题
+    # 个人办事主题
     person_theme = Column(String(255), nullable=True, comment='个人办事主题')
     # 企业办事主题
     enterprise_theme = Column(String(255), nullable=True, comment='企业办事主题')
     # 网上办理深度
-    online_depth = Column(String(32), nullable=True, comment='网上办理深度')
+    online_depth = Column(String(255), nullable=True, comment='网上办理深度')
 
     # 通办范围
     nationwide_coverage = Column(String(64), nullable=True, comment='通办范围')
@@ -115,9 +111,9 @@ class ServiceBasicInformationInfo(Base):
     coverage_description = Column(Text, nullable=True, comment='通办范围说明')
 
     # 是否全国高频“跨省通办”事项
-    is_national_cross_province = Column(Boolean, nullable=True, comment='是否全国高频“跨省通办”事项')
+    is_national_cross_province = Column(String(50), nullable=True, comment='是否全国高频“跨省通办”事项')
     # 跨省通办模式
-    cross_province_mode = Column(String(64), nullable=True, comment='跨省通办模式')
+    cross_province_mode = Column(String(255), nullable=True, comment='跨省通办模式')
     # 跨省通办模式说明
     cross_province_explain = Column(Text, nullable=True, comment='跨省通办模式')
     # 跨省代收代办区域
@@ -129,37 +125,37 @@ class ServiceBasicInformationInfo(Base):
     planned_cancel_date = Column(DateTime, nullable=True, comment='计划取消日期')
 
     # 是否开通预约服务
-    has_reservation = Column(Boolean, nullable=True, comment='是否开通预约服务')
+    has_reservation = Column(String(50), nullable=True, comment='是否开通预约服务')
     # 是否支持自助终端办理
-    support_self_service_terminal = Column(Boolean, nullable=True, comment='是否支持自助终端办理')
+    support_self_service_terminal = Column(String(50), nullable=True, comment='是否支持自助终端办理')
     # 面向自然人地方特色主题分类
     individual_theme_category = Column(String(255), nullable=True, comment='面向法人地方特色主题分类')
     # 面向法人地方特色主题分类
     corporate_theme_category = Column(String(255), nullable=True, comment='面向法人地方特色主题分类')
 
     # 移动端是否对接单点登录
-    mobile_sso_enabled = Column(Boolean, nullable=True, comment='移动端是否对接单点登录')
+    mobile_sso_enabled = Column(String(50), nullable=True, comment='移动端是否对接单点登录')
     # 计算机端是否对接单点登录
-    pc_sso_enabled = Column(Boolean, nullable=True, comment='计算机端是否对接单点登录')
+    pc_sso_enabled = Column(String(50), nullable=True, comment='计算机端是否对接单点登录')
 
     # 乡镇街道名称
-    town_street_name = Column(String(128), nullable=True, comment='乡镇街道名称')
+    town_street_name = Column(String(255), nullable=True, comment='乡镇街道名称')
     # 乡镇街道代码
     town_street_code = Column(String(64), nullable=True, comment='乡镇街道代码')
     # 村镇社区名称
-    village_community_name = Column(String(128), nullable=True, comment='村镇社区名称')
+    village_community_name = Column(String(255), nullable=True, comment='村镇社区名称')
     # 村镇社区代码
     village_community_code = Column(String(64), nullable=True, comment='村镇社区代码')
 
     # 是否支持物流快递
-    support_logistics = Column(Boolean, nullable=True, comment='是否支持物流快递')
+    support_logistics = Column(String(50), nullable=True, comment='是否支持物流快递')
     # 是否支持网上支付
-    support_online_payment = Column(Boolean, nullable=True, comment='是否支持网上支付')
+    support_online_payment = Column(String(50), nullable=True, comment='是否支持网上支付')
 
     # 事项状态
     status = Column(String(200), nullable=True, comment='事项状态')
     # 是否全程代办
-    full_proxy_enabled = Column(Boolean, nullable=True, comment='是否全程代办')
+    full_proxy_enabled = Column(String(50), nullable=True, comment='是否全程代办')
 
     # 是否收费
     charge_limit = Column(String(50), nullable=True, comment='是否收费')

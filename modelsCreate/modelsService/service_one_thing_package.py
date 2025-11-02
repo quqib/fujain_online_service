@@ -45,7 +45,7 @@ class ServiceOneThingPackage(Base):
     market_negativate_name = Column(String(500), nullable=True, comment='负面清单事项名称')
 
     # 负面清单事项编码（国家级统一编码）
-    market_negativate_code = Column(String(64), nullable=True, index=True, comment='负面清单事项编码')
+    market_negativate_code = Column(String(64), nullable=True, comment='负面清单事项编码')
 
     # ================== 措施信息 ==================
     # 负面清单事项措施名称（如“需取得省级主管部门前置审批”）
@@ -77,7 +77,7 @@ class ServiceOneThingPackage(Base):
 
     # ================== 措施关联匹配 ==================
     # 关联的政务服务事项基本目录（可关联多个，此处存储编码或名称 名称之间使用!@#进行隔开）
-    associated_service_item = Column(Text, nullable=True, index=True, comment='政务服务事项基本目录')
+    associated_service_item = Column(Text, nullable=True, comment='政务服务事项基本目录')
 
     # 创建时间
     create_date = Column(DateTime, nullable=True, default=func.current_timestamp(), comment='创建时间')
