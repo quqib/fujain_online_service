@@ -25,6 +25,8 @@ class ServiceApplicationMaterialInfo(Base):
         nullable=False,
         comment='关联 service_basic_information_info 表的主键'
     )
+    # 申报材料unid
+    material_unid = Column(String(36), nullable=True, comment='文件类型')
 
     # 文件类型
     file_type = Column(String(100), nullable=True, comment='文件类型')
@@ -49,6 +51,9 @@ class ServiceApplicationMaterialInfo(Base):
 
     # 填报须知
     filling_instructions = Column(Text, nullable=True, comment='填报须知')
+
+    # 首次申请（是否为首次申请）'0'=是，'1'=否
+    first_application = Column(String(2), nullable=True, comment='首次申请')
 
     # 附件下载（存储文件二进制或路径 格式文本 示范文本）
     material_formguid = Column(LONGBLOB, nullable=True, comment='附件下载格式文本')

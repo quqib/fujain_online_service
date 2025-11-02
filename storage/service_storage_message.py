@@ -6,7 +6,10 @@ from modelsCreate.modelsService.service_basic_duty_info import ServiceBasicDutyI
 from modelsCreate.modelsService.service_counter_service_info import ServiceCounterServiceInfo
 from modelsCreate.modelsService.service_online_processing_info import ServiceOnlineProcessingInfo
 from modelsCreate.modelsService.service_processing_procedure_info import ServiceProcessingProcedureInfo
+from modelsCreate.modelsService.service_asked_question_info import ServiceAskedQuestionInfo
 from modelsCreate.modelsService.service_basis_handling_info import ServiceBasisHandlingInfo
+from modelsCreate.modelsService.service_application_material_info import ServiceApplicationMaterialInfo
+from modelsCreate.modelsService.service_material_verification_info import ServiceMaterialVerificationInfo
 
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -59,7 +62,7 @@ def save_service_all(parsed: dict):
             # 委托部门
             entrusted_department=service_basic.get("deptEntrust"),
             # 联办机构
-            joint_agencies=service_basic.get("dirName"),
+            joint_agencies=service_basic.get("coopOrg"),
             # 主办处室
             host_office=service_basic.get("leadDept"),
 
@@ -72,8 +75,8 @@ def save_service_all(parsed: dict):
 
             # 特殊环节
             special_links=service_basic.get("specialList"),
-            # 一件事集成套餐
-            dir_name=service_basic.get("dirName"),
+            # 一件事集成套餐(这个是一个链接)
+
             # 市场准入负面清单许可准入措施
             market_access_measures=service_basic.get("marketAccessList"),
             # 中介服务
@@ -264,6 +267,55 @@ def save_service_all(parsed: dict):
             session.add(service_responsibity_author_obj)
 
         # 存储申报材料
+        service_application_materials = parsed.get("service_application_materials", [])
+        if service_application_materials:
+            for service_application_material in service_application_materials:
+                service_application_material_obj = ServiceApplicationMaterialInfo(
+                    # 外键
+                    basic_info_rowguid=service_basic.get("unid"),
+                    # 申报材料unid
+                    material_unid=service_application_material.get("unid"),
+                    # 文件类型
+                    file_type=service_application_material.get("materialName"),
+                    # 材料形式(1-纸质，电子材料 3-纸质 7-电子材料)
+                    material_form=service_application_material.get("gettypeunids"),
+                    # 材料要求
+                    material_requirements=service_application_material.get("medium"),
+                    # 份数
+                    material_pagenum=service_application_material.get("pagenum"),
+                    # 材料必要性
+                    material_necessity=service_application_material.get("necessityIf"),
+                    # 来源渠道
+                    source_channel=service_application_material.get("materialsrc"),
+                    # 设立依据
+                    basis_of_establishment=service_application_material.get("applyAccord"),
+                    # 填报须知
+                    filling_instructions=service_application_material.get("reportNotice"),
+                    # 附件下载
+                    # 格式文本
+                    material_formguid=service_application_material.get("materialFormguid"),
+                    # 示范文本
+                    material_exampleguid=service_application_material.get("materialExampleguid"),
+                    # 首次申请（是否为首次申请）
+                    first_application=service_application_material.get("situationTitle"),
+                )
+                session.add(service_application_material_obj)
+
+        # 材料核查
+        service_material_verifications = parsed.get("service_material_verifications", [])
+        if service_material_verifications:
+            for service_material_verification in service_material_verifications:
+                service_material_verification_obj = ServiceMaterialVerificationInfo(
+                    # 外键
+                    basic_info_rowguid=service_material_verification.get("materialUnid"),
+                    # 本身节点
+                    problem_unid=service_material_verification.get("problemUnid"),
+                    # 父级节点
+                    parent_problem_unid=service_material_verification.get("parentProblemUnid"),
+                    # 本身字段
+                    problem_name=service_material_verification.get("problemName"),
+                )
+                session.add(service_material_verification_obj)
 
 
         # 存储窗口办理+受理条件
@@ -338,7 +390,7 @@ def save_service_all(parsed: dict):
         service_asked_questions = parsed.get("service_asked_question", [])
         if service_asked_questions:
             for service_asked_question in service_asked_questions:
-                service_asked_question_obj = ServiceProcessingProcedureInfo(
+                service_asked_question_obj = ServiceAskedQuestionInfo(
                     # 外键
                     basic_info_rowguid=service_basic.get("unid"),
                     # 问题名称

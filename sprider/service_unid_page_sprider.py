@@ -324,9 +324,9 @@ def service_get_message(unid):
     data_materials = res_materials.json().get("data", {})
 
     # 用来存储申报材料信息
-    application_materials = []
+    service_application_materials = []
     # 用来存储核查信息
-    service_material_verification = []
+    service_material_verifications = []
 
     directoryList = data_materials.get("directoryList") or []
 
@@ -339,8 +339,8 @@ def service_get_message(unid):
 
     # 递归处理children 获取application_materials
     get_application_materials(materialCheckList,
-                              application_materials,
-                              service_material_verification,
+                              service_application_materials,
+                              service_material_verifications,
                               data_attachment_information)
 
 
@@ -450,9 +450,9 @@ def service_get_message(unid):
         # 权责清单
         "service_responsibity_author": service_responsibity_author,
         # 申报材料
-        "service_application_materials": application_materials,
+        "service_application_materials": service_application_materials,
         # 申报材料——核查数据
-        "service_material_verification": service_material_verification,
+        "service_material_verifications": service_material_verifications,
         # 窗口办理+受理条件
         "service_apply": service_apply,
         # 网上办理
@@ -467,7 +467,7 @@ def service_get_message(unid):
 
 
 
-service_get_message(unid="F8B0582A365552FB9247B678A952D7AF")
+# service_get_message(unid="F8B0582A365552FB9247B678A952D7AF")
 
 
 
@@ -586,12 +586,20 @@ def get_message_children(data, all_node):
     # 获取段落文本
     problemName = data.get("problemName")
 
+    # 材料标识
+    materialUnid = data.get("materialUnid")
+
     for childProblem in childProblems:
         get_message_children(childProblem, all_node=all_node)
 
     all_node.append({
+        # 材料标识
+        "materialUnid": materialUnid,
+        # 本身节点
         "problemUnid": problemUnid,
+        # 父级节点
         "parentProblemUnid": parentProblemUnid,
+        # 本身字段
         "problemName": problemName,
     })
 

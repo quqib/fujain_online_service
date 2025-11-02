@@ -60,7 +60,9 @@ urlConfig = {
     "downloadAttachmentUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/file/downloadFile",
     # 处理核查标准
     "materialCheckStandardUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasDirectory/getReviewpoint",
-    
+    # 底部链接
+    "getBottomLinkUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasDirectory/getDirRelMainList",
+
     # 三级页面链接
     "serviceUnidPageUrl": "https://zwfw.fujian.gov.cn:732/cms-business/apasService/getMatterBasicInfo",
     # 网上办理
@@ -116,6 +118,14 @@ parameter = {
     # 处理核查标准
     "materialCheckStandard": {
         "materialUnid":""
+    },
+    # 获取底部链接
+    "getBottomLink":{
+        "unid": "",
+        "areacode": "",
+        "deptUnid": "",
+        "pageNum": "1",
+        "pageSize": "10"
     },
 
     # 三级页面请求参数
