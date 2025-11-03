@@ -45,7 +45,7 @@ def save_all(parsed: dict):
             dir_link=basic.get("dirLink"),
         )
         session.add(basic_obj)
-        session.commit()
+        session.flush()
 
         # 存储二进制图片 二进制docx文件
         basic_picture = parsed.get("basic_picture", {})

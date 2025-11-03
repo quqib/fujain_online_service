@@ -173,7 +173,7 @@ def save_service_all(parsed: dict):
 
         )
         session.add(service_basic_obj)
-        session.commit()
+        session.flush()
 
         # 存储特殊环节-使用for循环写入
         service_section_list = parsed.get("service_section_list", [])
@@ -241,7 +241,7 @@ def save_service_all(parsed: dict):
                 session.add(service_market_acces_obj)
 
         # 存储权责清单
-        service_responsibity_author = parsed.get("service_responsibity_author")
+        service_responsibity_author = parsed.get("service_responsibity_author", {})
         if service_responsibity_author:
             service_responsibity_author_obj = ServiceBasicDutyInfo(
                 # 外键
@@ -303,6 +303,7 @@ def save_service_all(parsed: dict):
                     first_application=service_application_material.get("situationTitle"),
                 )
                 session.add(service_application_material_obj)
+                session.flush()
 
         # 材料核查
         service_material_verifications = parsed.get("service_material_verifications", [])
@@ -322,7 +323,7 @@ def save_service_all(parsed: dict):
 
 
         # 存储窗口办理+受理条件
-        service_apply = parsed.get("service_apply")
+        service_apply = parsed.get("service_apply", {})
         if service_apply:
             service_apply_obj = ServiceCounterServiceInfo(
                 # 外键
@@ -379,7 +380,7 @@ def save_service_all(parsed: dict):
                 session.add(service_processing_procedure_obj)
 
         # 办理依据
-        service_handling = parsed.get("service_handling")
+        service_handling = parsed.get("service_handling", {})
         if service_handling:
             service_handling_obj = ServiceBasisHandlingInfo(
                 # 外键

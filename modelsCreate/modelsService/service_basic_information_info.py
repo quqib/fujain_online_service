@@ -61,18 +61,18 @@ class ServiceBasicInformationInfo(Base):
     host_office = Column(String(255), nullable=True, comment='主办处室')
 
     # 权力来源
-    power_source = Column(String(64), nullable=True, comment='权力来源')
+    power_source = Column(String(255), nullable=True, comment='权力来源')
     # 联系电话
-    contact_phone = Column(String(20), nullable=True, comment='联系电话')
+    contact_phone = Column(String(255), nullable=True, comment='联系电话')
     # 监督投诉电话
-    supervision_phone = Column(String(20), nullable=True, comment='监督投诉电话')
+    supervision_phone = Column(String(255), nullable=True, comment='监督投诉电话')
 
     # 中介服务
     intermediary_services = Column(Text, nullable=True, comment='中介服务')
     # 审批结果名称
     approval_result_name = Column(String(255), nullable=True, comment='审批结果名称')
     # 审批结果类型
-    approval_result_type = Column(String(64), nullable=True, comment='审批结果类型')
+    approval_result_type = Column(String(255), nullable=True, comment='审批结果类型')
     # 审批结果样本
     approval_result_sample = Column(LONGTEXT, nullable=True, comment='审批结果样本')
     # 审批结果样本名称
@@ -80,7 +80,7 @@ class ServiceBasicInformationInfo(Base):
     # 审批结果样本类型
     approval_result_sample_type = Column(String(255), nullable=True, comment='审批结果样本类型')
     # 审批结果共享
-    approval_result_share = Column(String(50), nullable=True, comment='审批结果共享')
+    approval_result_share = Column(String(255), nullable=True, comment='审批结果共享')
     # 结果领取方式
     result_receive_method = Column(String(255), nullable=True, comment='结果领取方式')
     # 结果领取说明
@@ -92,7 +92,7 @@ class ServiceBasicInformationInfo(Base):
     # 是否进驻政务大厅
     in_service_hall = Column(String(2), nullable=True, comment='是否进驻政务大厅')
     # 办理形式
-    handling_form = Column(String(200), nullable=True, comment='办理形式')
+    handling_form = Column(String(255), nullable=True, comment='办理形式')
     # 必须现场办理原因
     must_on_site_reason = Column(Text, nullable=True, comment='必须现场办理原因')
 

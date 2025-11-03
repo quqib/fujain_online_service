@@ -8,13 +8,13 @@ from storage.storage_message import save_all
 from sprider.service_unid_page_sprider import service_get_message
 from storage.service_storage_message import save_service_all
 from storage.db import init_db
+from config.seetings import unid_list
 
 def main():
     init_db()
     # 获取所有的unid
-    unid_list = fetch_all_unids()
-
-    # unid_list = ["E9D22FD97F359D97144DC46A160EA7A5"]
+    # unid_list = fetch_all_unids()
+    # unid_list = ["2A5AD21BDE171669844A0511D6DB58BA"]
     # 池大小（可按需调整）
     producer_workers = 10  # 用于处理 unid（第一阶段）
     consumer_workers = 6   # 用于处理 service_unid（第二阶段）

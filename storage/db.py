@@ -6,7 +6,7 @@ from modelsCreate.base import Base
 
 
 # 创建引擎和会话
-engine = create_engine(DATABASE_URL, echo=True)  # echo=True 可查看 SQL 输出
+engine = create_engine(DATABASE_URL, echo=False)  # echo=True 可查看 SQL 输出
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -18,12 +18,18 @@ def init_db():
 # import base64
 # import zlib
 # from modelsCreate.modelsService.service_application_material_info import ServiceApplicationMaterialInfo
-
+# from modelsCreate.basic_information_info import BasicInformationInfo
 # session = SessionLocal()
 #
 # # 查询 rowguid = 'C340...' 的记录
-# instance = session.get(ServiceApplicationMaterialInfo, '0099231b-9608-4050-90bd-9a1d16489e74')
+# instance = session.get(BasicInformationInfo, '0099231b-9608-4050-90bd-9a1d16489e74')
+
+# column_values = (session.query(BasicInformationInfo.rowguid).all())
 #
+# name_list = [row[0] for row in column_values]  # row 是元组 (value,)
+#
+# print(name_list)
+
 # if instance:
 #     # 读取某个字段
 #     base64_str = instance.material_formguid  # Base64 字符串

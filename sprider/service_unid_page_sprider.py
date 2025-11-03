@@ -10,7 +10,7 @@ import requests
 import base64
 import zlib  # 或 gzip，这里推荐 zlib (DEFLATE)
 from config.seetings import headers, urlConfig, parameter
-
+from retrying import retry, RetryError
 
 def service_get_message(unid, main_unid):
 
@@ -201,7 +201,7 @@ def service_get_message(unid, main_unid):
     # -------------------------------
     service_market_access = []
 
-    marketAccessList = apasService.get("marketAccessList")
+    marketAccessList = apasService.get("marketAccessList") if apasService.get("marketAccessList") else []
     for marketAccess in marketAccessList:
         params_market_access = parameter["marketAccess"].copy()
         params_market_access["id"] = marketAccess.get("unid")
@@ -263,35 +263,44 @@ def service_get_message(unid, main_unid):
     # -------------------------------
     # 4.业务办理-基础信息-权责清单
     # -------------------------------
+    # service_responsibity_author = params_responsibity_author_request(apasService)
     params_responsibity_author = parameter["responsibilityAuthorities"].copy()
     params_responsibity_author["powerunid"] = apasService.get("powerunid")
-
-    res_responsibity_author= requests.get(
+    time.sleep(random.randint(1, 3))
+    res_responsibity_author = requests.get(
         url=urlConfig.get("responsibilityAuthoritiesUrl"),
         params=params_responsibity_author,
         headers=headers,
         timeout=30
     )
     data_responsibity_author = res_responsibity_author.json().get("data", {})
+    # 如果data_responsibity_author是个列表
+    if isinstance(data_responsibity_author, list):
+        print("是一个列表的示例")
+        print(data_responsibity_author)
+        data_responsibity_author = {}
+    service_responsibity_author = {}
     # 关联服务事项名称列表集合
-    apaserviceList = data_responsibity_author.get("apaserviceList")
-    # 权责清单
-    service_responsibity_author = {
-        # 类别
-        "stype": data_responsibity_author.get("stype"),
-        # 权责编码
-        "mattercode": data_responsibity_author.get("mattercode"),
-        # 关联服务事项名称
-        "apaservice_name": "!@#".join([apaservice.get("name") for apaservice in apaserviceList]),
-        # 行使主体
-        "deptname": data_responsibity_author.get("deptname"),
-        # 行使层级
-        "xslevel": data_responsibity_author.get("xslevel"),
-        # 实施依据
-        "according": data_responsibity_author.get("according"),
-        # 备注
-        "remark": data_responsibity_author.get("remark"),
-    }
+    if data_responsibity_author:
+        # 判断data_responsibity_autho
+        apaserviceList = data_responsibity_author.get("apaserviceList")
+        # 权责清单
+        service_responsibity_author = {
+            # 类别
+            "stype": data_responsibity_author.get("stype"),
+            # 权责编码
+            "mattercode": data_responsibity_author.get("mattercode"),
+            # 关联服务事项名称
+            "apaservice_name": "!@#".join([apaservice.get("name") for apaservice in apaserviceList]),
+            # 行使主体
+            "deptname": data_responsibity_author.get("deptname"),
+            # 行使层级
+            "xslevel": data_responsibity_author.get("xslevel"),
+            # 实施依据
+            "according": data_responsibity_author.get("according"),
+            # 备注
+            "remark": data_responsibity_author.get("remark"),
+        }
 
 
     # -------------------------------
@@ -358,7 +367,7 @@ def service_get_message(unid, main_unid):
     )
     processing_procedures = res_processing_procedure.json().get("data", {}).get("flowNodeList", [])
     service_processing_procedure = []
-    for processing_procedure in processing_procedures:
+    for processing_procedure in (processing_procedures or []):
         service_processing_procedure.append({
             # 办理流程(申请与受理|审查|决定)
             "name": processing_procedure.get("name"),
@@ -391,7 +400,7 @@ def service_get_message(unid, main_unid):
     data_online = res_online.json().get("data", {})
 
     service_onlines = []
-    for online in data_online:
+    for online in (data_online or []):
         online_dict = online.get("dict")
         accept = 1 if online.get("accept") else 0
         service_onlines.append({
@@ -428,7 +437,7 @@ def service_get_message(unid, main_unid):
     )
     data_asked_questions = res_asked_questions.json().get("data", {})
     service_asked_question = []
-    for data_asked_question in data_asked_questions:
+    for data_asked_question in (data_asked_questions or {}):
         service_asked_question.append({
             # 问题标题
             "title": data_asked_question.get("title"),
@@ -468,6 +477,53 @@ def service_get_message(unid, main_unid):
 
 
 # service_get_message(unid="F8B0582A365552FB9247B678A952D7AF")
+
+@retry(stop_max_attempt_number=3, wait_random_min=1000, wait_random_max=3000, reraise=False)
+def params_responsibity_author_request(apasService):
+    try:
+        params_responsibity_author = parameter["responsibilityAuthorities"].copy()
+        params_responsibity_author["powerunid"] = apasService.get("powerunid")
+
+        res_responsibity_author = requests.get(
+            url=urlConfig.get("responsibilityAuthoritiesUrl"),
+            params=params_responsibity_author,
+            headers=headers,
+            timeout=30
+        )
+        data_responsibity_author = res_responsibity_author.json().get("data", {})
+        # 如果data_responsibity_author是个列表
+        if isinstance(data_responsibity_author, list):
+            raise ValueError("data is a list, need retry")
+        service_responsibity_author = {}
+        # 关联服务事项名称列表集合
+        if data_responsibity_author:
+            # 判断data_responsibity_autho
+            apaserviceList = data_responsibity_author.get("apaserviceList")
+            # 权责清单
+            service_responsibity_author = {
+                # 类别
+                "stype": data_responsibity_author.get("stype"),
+                # 权责编码
+                "mattercode": data_responsibity_author.get("mattercode"),
+                # 关联服务事项名称
+                "apaservice_name": "!@#".join([apaservice.get("name") for apaservice in apaserviceList]),
+                # 行使主体
+                "deptname": data_responsibity_author.get("deptname"),
+                # 行使层级
+                "xslevel": data_responsibity_author.get("xslevel"),
+                # 实施依据
+                "according": data_responsibity_author.get("according"),
+                # 备注
+                "remark": data_responsibity_author.get("remark"),
+            }
+
+        return  service_responsibity_author
+
+    except Exception as e:
+        # 重试3次后仍然失败
+        print(f"关于三次尝试，出现上述报错信息{e}")
+
+    return {}
 
 
 # 获取所有的附件信息
@@ -524,40 +580,13 @@ def download_file(id):
 
     return base64_str
 
-# 处理图片信息
-def deal_basic_picture(imgfile, wordfile):
-    # 只保留是字典类型，并且包含必要字段的项
-    imgFile = cleaned_imgfile(imgfile)
-    iwordfile = cleaned_imgfile(wordfile)
-    imgFile.extend(iwordfile)
-
-    result = {}
-    for imgWordFile in imgFile:
-        if imgWordFile:
-            fileName = imgWordFile.get("fileName")
-            fileUnid = imgWordFile.get("fileUnid")
-            binary_content = download_file(fileUnid)
-            result[fileName] = binary_content
-
-    return result
-
-
-# 只保留字典类型的数据
-def cleaned_imgfile(imgfile):
-    # 判断一下这个东西是不是只有元组，如果是元组，取第0个
-    if isinstance(imgfile, tuple):
-        imgfile = imgfile[0] if len(imgfile) > 0 else {}
-
-    cleaned_imgfile = [item for item in imgfile if isinstance(item, dict) and item.get("fileName") and item.get("fileUnid")]
-    return cleaned_imgfile
-
 # 请求——材料核查标准
 def res_message_children(itemUnid, materialName, materialUnid):
     params_material_erification = parameter["materialVerificationInformation"].copy()
     params_material_erification["itemUnid"] = itemUnid
     params_material_erification["materialName"] = materialName
     params_material_erification["materialUnid"] = materialUnid
-
+    time.sleep(random.randint(1, 3))
     res_material_erification = requests.post(
         url=urlConfig.get("materialVerificationInformationUrl"),
         json=params_material_erification,
@@ -656,8 +685,9 @@ def get_application_materials(materialList,
             data_material_erification = res_message_children(itemUnid,
                                                              material.get("name"),
                                                              material.get("unid"))
-            # 解析核查标准信息
-            get_message_children(data_material_erification, all_data)
+            if data_material_erification:
+                # 解析核查标准信息
+                get_message_children(data_material_erification, all_data)
 
             # 格式文本处理
             attachment = get_check_attachment(data_attachment_information, material.get("unid"), type=2)
@@ -703,3 +733,4 @@ def get_application_materials(materialList,
             })
 
 
+# service_get_message("CDB5A720B24C74A95548EBBE611B711B", "C151F00645900410A65BF2867DFF83C2")

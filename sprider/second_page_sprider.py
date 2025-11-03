@@ -5,7 +5,7 @@ import requests
 import math
 from config.seetings import headers, urlConfig, parameter
 
-def fetch_all_unids():
+def fetch_all_unids(type=1):
     """
     分页获取所有 serviceList 并直接提取 unid
     """
@@ -46,9 +46,12 @@ def fetch_all_unids():
             )
             res.raise_for_status()
             service_list = res.json().get("data", {}).get("serviceList", [])
+            if type == 1:
+                # 递归提取 unid
+                _extract_unids(service_list, unid_list)
 
-            # 递归提取 unid
-            _extract_unids(service_list, unid_list)
+            else:
+                _extract_unid_tuples(service_list, unid_list)
 
         return unid_list
 
@@ -59,7 +62,7 @@ def fetch_all_unids():
         print(f"解析响应出错: {e}")
         return []
 
-
+# 这里返回的是最后一个有效的unid
 def _extract_unids(services, unid_list):
     """
     递归提取 unid，内部使用
@@ -74,3 +77,35 @@ def _extract_unids(services, unid_list):
             unid = service.get("unid")
             if unid:
                 unid_list.append(unid)
+
+# 这里返回的是层级结构
+def _extract_unid_tuples(services, result_tuples):
+    """
+    递归提取每个节点的 (parent_unid, unid) 元组
+    :param services: 当前层级的服务列表（可能是 list 或 dict）
+    :param result_tuples: 存放结果的列表，元素为 (parent_unid, unid)
+    """
+    # 如果是字典，转成单元素列表处理
+    if isinstance(services, dict):
+        services = [services]
+
+    if not isinstance(services, list):
+        return
+
+    for service in services:
+        unid = service.get("unid")
+        parent_unid = service.get("parentUnid")  # 注意字段名是 parentUnid（驼峰）
+
+        # 获取部门名称
+        dept_name = service.get("deptName")
+        dir_name = service.get("dirName")
+
+
+        # 只要当前节点有 unid，就记录 (parent_unid, unid)
+        if unid:
+            result_tuples.append((parent_unid, unid, dept_name, dir_name))
+
+        # 递归处理子节点
+        children = service.get("rspApasDirectoryList")
+        if children:
+            _extract_unid_tuples(children, result_tuples)
