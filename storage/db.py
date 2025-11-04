@@ -19,16 +19,21 @@ def init_db():
 # import zlib
 # from modelsCreate.modelsService.service_application_material_info import ServiceApplicationMaterialInfo
 # from modelsCreate.basic_information_info import BasicInformationInfo
+# from config.seetings import unid_list_test
 # session = SessionLocal()
 #
 # # 查询 rowguid = 'C340...' 的记录
 # instance = session.get(BasicInformationInfo, '0099231b-9608-4050-90bd-9a1d16489e74')
-
-# column_values = (session.query(BasicInformationInfo.rowguid).all())
 #
+# column_values = (session.query(BasicInformationInfo.rowguid).all())
+# #
 # name_list = [row[0] for row in column_values]  # row 是元组 (value,)
 #
-# print(name_list)
+# result = [item for item in unid_list_test if item not in name_list]
+#
+# print(result)  # 输出: ['A', 'C']
+# print(len(result))
+
 
 # if instance:
 #     # 读取某个字段
