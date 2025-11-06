@@ -8,7 +8,7 @@ from storage.storage_message import save_all
 from sprider.service_unid_page_sprider import service_get_message
 from storage.service_storage_message import save_service_all
 from storage.db import init_db
-from config.seetings import unid_list
+from config.seetings import unid_list, unid_list_test
 
 def main():
     init_db()
@@ -67,9 +67,10 @@ def main():
             unid, service_unid = item
             try:
                 # 这里 save_service_all 应该是根据 service_unid 获取并保存三层数据
-                parsed_service = service_get_message(service_unid, unid)
-                save_service_all(parsed_service)
-                print(f"{unid}（三层）{service_unid} 保存成功")
+                # parsed_service = service_get_message(service_unid, unid)
+                # save_service_all(parsed_service)
+                # print(f"{unid}（三层）{service_unid} 保存成功")
+                pass
             except Exception as e:
                 print(f"{unid}（三层）{service_unid} 处理失败：", e)
             finally:
@@ -84,7 +85,7 @@ def main():
 
     # 使用线程池并发运行生产者任务（处理 unid）
     with ThreadPoolExecutor(max_workers=producer_workers) as prod_executor:
-        futures = [prod_executor.submit(producer_task, unid) for unid in unid_list]
+        futures = [prod_executor.submit(producer_task, unid) for unid in unid_list_test]
         # 可以使用 as_completed 来打印或监控进度
         for f in as_completed(futures):
             # 如果需要，可以检查 f.result() 或捕获异常（producer_task 内部已捕获）

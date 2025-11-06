@@ -104,7 +104,7 @@ def save_all(parsed: dict):
                     # 父节点
                     parent_unid=application_material.get("parentUnid"),
                     # 材料形式(1-纸质，电子材料 3-纸质 7-电子材料)
-                    material_form=application_material.get("materialOrdernum"),
+                    material_form=application_material.get("materialFormat"),
                     # 材料要求
                     material_requirements=application_material.get("materialMedium"),
                     # 份数

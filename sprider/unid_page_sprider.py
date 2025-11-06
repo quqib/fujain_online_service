@@ -256,7 +256,7 @@ def get_application_materials(materialList, application_materials, parent_unid=N
                 # 文件类型
                 "materialName": material.get("materialName"),
                 # 材料形式(1-纸质，电子材料 2-电子材料 3-纸质 7-电子材料)
-                "materialOrdernum": material.get("materialOrdernum"),
+                "materialFormat": material.get("materialFormat"),
                 # 材料要求(材料类型 份数)
                 # 类型
                 "materialMedium": material.get("materialMedium"),

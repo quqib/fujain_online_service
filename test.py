@@ -2,8 +2,10 @@ import requests
 from config.seetings import headers
 from utils.util import get_time_code
 from sprider.second_page_sprider import fetch_all_unids
+from config.seetings import unid_list_test
 # unid_list = fetch_all_unids()
 
+# print(len(unid_list_test))
 
 exit()
 url = 'https://zwfw.fujian.gov.cn:732/cms-business/listingDetail/getPowerDetail'

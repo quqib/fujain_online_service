@@ -39,7 +39,7 @@ DB_CONFIG = {
     'port': 3306,
     'user': 'root',
     'password': 'Zy20250901!',
-    'database': 'online_service_remote',
+    'database': 'test',
     'charset': 'utf8mb4'
 }
 
